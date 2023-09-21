@@ -5,7 +5,7 @@ Projeto avaliativo da terceira unidade da disciplina de Programação Funcional,
 Integrantes do projeto:
 - Thiago Menezes Vasconcelos
 - Alícia Vitória Sousa Santos
-- José Élio
+- José Elio Leite Santana
 - Nicolas Mateus
 
 

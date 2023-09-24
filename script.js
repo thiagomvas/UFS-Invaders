@@ -115,6 +115,7 @@ const update = () => {
         // Mover os jogadores se ambos estiverem vivos
         if(EstadoDeJogo.jogadorVencedor < 1)
         {
+            console.log('test');
             EstadoDeJogo.jogador1.x = moverNave(EstadoDeJogo.jogador1, p1Input * velocidadeNave);
             EstadoDeJogo.jogador2.x = moverNave(EstadoDeJogo.jogador2, p2Input * velocidadeNave);
         }
@@ -160,8 +161,8 @@ const moverInimigo = (inimigo, deltaX, deltaY) => {
  */
 const moverNave = (nave, deltaX) => {
     if(nave.x + deltaX <= 0) return canvas.clientWidth - 10; // Checa se vai sair do mundo pela esquerda
-    else if(posX + deltaX >= canvas.clientWidth - distNaveParedeMinima) return 10 // O mesmo para a direita;
-    else return posX + deltaX;
+    else if(nave.x + deltaX >= canvas.clientWidth - distNaveParedeMinima) return 10 // O mesmo para a direita;
+    else return nave.x + deltaX;
 }
 
 /**

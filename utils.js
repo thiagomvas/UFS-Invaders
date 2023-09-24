@@ -15,3 +15,6 @@ const criarProjetil = (xpos, ypos) => {return {x: xpos, y: ypos}}; // função b
 const addNaLista = (lista, novoelemento) => [...lista, novoelemento]; // função que adiciona os novos projeteis a serem lançados, dentro da lista de projeteis do EstadoDeJogo
 
 const indef = (x) => typeof x == 'undefined';
+
+const dificuldadeInimigos = (tempoDeJogo) => tempoDeJogo**(3/2)/200 + Math.sqrt(tempoDeJogo)/10
+//função de crescimento exponencial da dificuldade do jogo em função do tempo

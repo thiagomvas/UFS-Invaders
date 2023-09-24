@@ -6,6 +6,7 @@ const FPSDesejado = 60;
 const velocidadeNave = 3;
 const velocidadeProjeteis = -10;
 const distNaveParedeMinima = 10; // Distancia minima entre a nave e a parede (basicamente a largura de uma parede imaginaria nos lados)
+const velocidadeInimigos = 10 //velocidade de aproximação do inimigo as naves dos jogadores
 
 var EstadoDeJogo = {
     jogador1: {
@@ -69,6 +70,9 @@ document.addEventListener("keyup", (event) => {
 })
 
 const update = () => {
+
+    const horaInicial = Date.now() //contador de tempo do jogo
+
     const frame = () => {       //Tudo que quiser fazer por frame façam aqui dentro dessa função
 
         const p1Input = EstadoDeJogo.jogador1.input;
@@ -76,9 +80,11 @@ const update = () => {
         const p2Input = EstadoDeJogo.jogador2.input;
         const p2posX = EstadoDeJogo.jogador2.x;
 
+        const tempoDeJogoTotal = Date.now() - horaInicial //função que mostra o tempo total de jogo frame a frame
+
         ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientWidth);
 
-        EstadoDeJogo.inimigos = EstadoDeJogo.inimigos.map((inim) => moverInimigo(inim, inim.x, inim.y + 1))
+        EstadoDeJogo.inimigos = EstadoDeJogo.inimigos.map((inim) => moverInimigo(inim, inim.x, inim.y + velocidadeInimigos*dificuldadeInimigos(tempoDeJogoTotal))) 
         EstadoDeJogo.inimigos = removerForaDoMapa(EstadoDeJogo.inimigos);
 
         EstadoDeJogo.projeteis = EstadoDeJogo.projeteis.map((proj) => moverProjetil(proj, velocidadeProjeteis))

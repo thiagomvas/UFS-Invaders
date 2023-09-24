@@ -115,7 +115,6 @@ const update = () => {
         // Mover os jogadores se ambos estiverem vivos
         if(EstadoDeJogo.jogadorVencedor < 1)
         {
-            console.log('test');
             EstadoDeJogo.jogador1.x = moverNave(EstadoDeJogo.jogador1, p1Input * velocidadeNave);
             EstadoDeJogo.jogador2.x = moverNave(EstadoDeJogo.jogador2, p2Input * velocidadeNave);
         }
@@ -202,7 +201,6 @@ const desenharInimigosRecursivo = (inimigos, cor) => {
     const [inimigo, ...xs] = inimigos;
     if(indef(inimigo)) return 0;
 
-    const asteroide=()=>{
         //Começando a desenhar o círculo do asteroide.
         ctx.beginPath();
         ctx.arc(inimigo.x, inimigo.y, inimigo.raio, 0, 2 * Math.PI);
@@ -211,23 +209,23 @@ const desenharInimigosRecursivo = (inimigos, cor) => {
         ctx.fill();
         
         //Primeiro triângulo da parte interna do círculo.
-        ctx1.beginPath();
-        ctx1.moveTo(inimigo.x-23,inimigo.y+20);//Ponta de baixo do triângulo.
-        ctx1.lineTo (inimigo.x-5,inimigo.y-30);//Ponta de cima do triângulo.
-        ctx1.lineTo (inimigo.x-28,inimigo.y-15);//Ponta do meio do triângulo.
-        ctx1.closePath();
-        ctx1.strokeStyle=ctx1.fillStyle="#000000"
-        ctx1.fill();
+        ctx.beginPath();
+        ctx.moveTo(inimigo.x-23,inimigo.y+20);//Ponta de baixo do triângulo.
+        ctx.lineTo (inimigo.x-5,inimigo.y-30);//Ponta de cima do triângulo.
+        ctx.lineTo (inimigo.x-28,inimigo.y-15);//Ponta do meio do triângulo.
+        ctx.closePath();
+        ctx.strokeStyle=ctx.fillStyle="#000000"
+        ctx.fill();
         
         //Pegundo triangulo da parte interna do círculo.
-        ctx2.beginPath();
-        ctx2.moveTo(inimigo.x,inimigo.y);//Ponta do triângulo localizada interna ao círculo.
-        ctx2.lineTo (inimigo.x+28,inimigo.y-10);//Ponta do triângulo localizada na parte de baixo e  externa ao círculo.
-        ctx2.lineTo(inimigo.x+23,inimigo.y+20) ;//Ponta do triângulo localizada na parte de cimae externa ao círculo. 
-        ctx2.closePath();
-        ctx2.strokeStyle=ctx2.fillStyle="#000000"
-        ctx2.fill();
-    }        
+        ctx.beginPath();
+        ctx.moveTo(inimigo.x,inimigo.y);//Ponta do triângulo localizada interna ao círculo.
+        ctx.lineTo (inimigo.x+28,inimigo.y-10);//Ponta do triângulo localizada na parte de baixo e  externa ao círculo.
+        ctx.lineTo(inimigo.x+23,inimigo.y+20) ;//Ponta do triângulo localizada na parte de cimae externa ao círculo. 
+        ctx.closePath();
+        ctx.strokeStyle=ctx.fillStyle="#000000"
+        ctx.fill();
+          
     desenharInimigosRecursivo(xs, cor);
 }
 

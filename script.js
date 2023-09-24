@@ -58,7 +58,9 @@ document.addEventListener("keydown", (event) => {
     // INPUT JOGADOR 2 (Mesma logica que o jogador 1)
 })
 
-
+/**
+ * Inicializa o gameloop do jogo, tentando rodar com `FPSDesejado` frames por segundo
+ */
 const update = () => {
 
     EstadoDeJogo.horaInicial = Date.now() //contador de tempo do jogo
@@ -113,8 +115,8 @@ const update = () => {
         // Mover os jogadores se ambos estiverem vivos
         if(EstadoDeJogo.jogadorVencedor < 1)
         {
-            EstadoDeJogo.jogador1.x = moverNave(p1posX, p1Input * velocidadeNave);
-            EstadoDeJogo.jogador2.x = moverNave(p2posX, p2Input * velocidadeNave);
+            EstadoDeJogo.jogador1.x = moverNave(EstadoDeJogo.jogador1, p1Input * velocidadeNave);
+            EstadoDeJogo.jogador2.x = moverNave(EstadoDeJogo.jogador2, p2Input * velocidadeNave);
         }
 
         // Caso algum dos jogadores tenha vencido, mostre quem ganhou
@@ -139,19 +141,43 @@ const update = () => {
 }
 
 
-// Exemplo de como desenhar algo e mover usando funcao trigonometrica.
+/**
+ * Move um determinado inimigo para o ponto (`deltaX`, `deltaY`) no plano XY
+ * @param {object} inimigo O objeto do inimigo que será movido
+ * @param {number} deltaX Coordenadas no eixo X
+ * @param {number} deltaY Coordenadas no eixo Y
+ * @returns
+ */
 const moverInimigo = (inimigo, deltaX, deltaY) => {
     return {...inimigo, x: deltaX, y: deltaY};
 }
 
-const moverNave = (posX, deltaX) => {
-    if(posX + deltaX <= 0) return canvas.clientWidth - 10; // Checa se vai sair do mundo pela esquerda
+/**
+ * Calcula a nova posição de uma `nave` no eixo X depois de mover `deltaX` unidades. Será levado para o outro lado do mapa se a nave chegar nas bordas do mapa
+ * @param {object} nave A nave que deseja calcular a nova posição
+ * @param {number} deltaX Unidades para se mover no eixo X
+ * @returns 
+ */
+const moverNave = (nave, deltaX) => {
+    if(nave.x + deltaX <= 0) return canvas.clientWidth - 10; // Checa se vai sair do mundo pela esquerda
     else if(posX + deltaX >= canvas.clientWidth - distNaveParedeMinima) return 10 // O mesmo para a direita;
     else return posX + deltaX;
 }
 
-const moverProjetil = (projetil, deltaY) => {return {...projetil, x: projetil.x, y: projetil.y + deltaY}}; //função que move os projeteis para cima, em função do eixo Y das coordenadas
+/**
+ * Calcula a nova posição de um `projetil` depois de mover `deltaY` unidades no eixo Y
+ * @param {object} projetil Projetil que deseja calcular a nova posição
+ * @param {number} deltaY Unidades para se mover no eixo Y
+ * @returns 
+ */
+const moverProjetil = (projetil, deltaY) => {return {...projetil, x: projetil.x, y: projetil.y + deltaY}}; 
 
+/**
+ * Desenha uma lista de `projeteis` utilizando recursividade para repetir a ação em cada um dos elementos da lista
+ * @param {object[]} projeteis A lista de projeteis a se desenhar
+ * @param {string} cor A cor dos projeteis em formato hexadecimal (EX: '#FFFFFF' é a cor branca)
+ * @returns 
+ */
 const desenharProjeteisRecursivo = (projeteis, cor) => { //função base que desenha os projeteis  
     const [projetil, ...xs] = projeteis;
     if(indef(projetil)) return 0; //se não forem adicionados novos projeteis a lista, nada acontece 
@@ -164,6 +190,12 @@ const desenharProjeteisRecursivo = (projeteis, cor) => { //função base que des
     desenharProjeteisRecursivo(xs, cor);
 }
 
+/**
+ * Desenha uma lista de `inimigos` utilizando recursividade para repetir a ação em cada um dos elementos da lista
+ * @param {object[]} inimigos A lista ded inimigos a se desenhar
+ * @param {string} cor A cor dos inimigos em formato hexadecimal (EX: '#FFFFFF' é a cor branca)
+ * @returns 
+ */
 const desenharInimigosRecursivo = (inimigos, cor) => {
 
     const [inimigo, ...xs] = inimigos;
@@ -178,6 +210,11 @@ const desenharInimigosRecursivo = (inimigos, cor) => {
     desenharInimigosRecursivo(xs, cor);
 }
 
+/**
+ * Retorna uma lista de todos os objetos que se situam dentro do mapa(canvas), removendo os que estão fora.
+ * @param {object[]} lista Lista de objetos para remover de fora do mapa
+ * @returns 
+ */
 const removerForaDoMapa = ([elem, ...xs]) => {
     if(indef(elem)) return [];
 
@@ -189,9 +226,29 @@ const removerForaDoMapa = ([elem, ...xs]) => {
     else return [elem, ...removerForaDoMapa(xs)];
 }
 
+/**
+ * Condição que checa se ja esta na hora de invocar a proxima horda de inimigos
+ * @param {number} tempoDeJogo A duração da partida atual
+ * @param {number} delayAtual A hora que será invocada a proxima/foi invocada a horda anterior
+ * @returns 
+ */
 const deveInvocarInimigo = (tempoDeJogo, delayAtual) => tempoDeJogo >= delayAtual;
+
+/**
+ * Calcula qual será o horario de invocar a proxima horda de inimigos
+ * @param {number} tempoDeJogo A duração da partida atual
+ * @param {number} delayAtual O horario que foi definido para a horda de inimigos mais recente
+ * @param {number} dificuldade A dificuldade atual do jogo
+ * @returns 
+ */
 const calcularProximoSpawn = (tempoDeJogo, delayAtual, dificuldade) => tempoDeJogo >= delayAtual ? delaySpawnInimigos/dificuldade + delayAtual : delayAtual;
 
+/**
+ * Retorna uma lista de inimigos, com a inclusão de `quantidade` inimigos. Ação feita por meio de recursividade
+ * @param {object[]} inimigos A lista de inimigos para se incluir a nova horda.
+ * @param {number} quantidade A quantidade de inimigos na nova horda
+ * @returns 
+ */
 const invocarInimigosRecursivo = (inimigos, quantidade) => {
     if(quantidade <= 0) return [];
     
@@ -202,12 +259,25 @@ const invocarInimigosRecursivo = (inimigos, quantidade) => {
     return [inimigo, ...invocarInimigosRecursivo(inimigos, quantidade - 1)]
 }
 
+/**
+ * Retorna uma lista de `inimigos` que não colidiram com nenhum projetil da lista `projeteis`. 
+ * Essa função utiliza `checarTodasColisoes()` como função auxiliar, visto que esta retorna a lista de inimigos que colidiu com projeteis da lista `projeteis`.
+ * @param {object[]} inimigos A lista de inimigos para se checar colisões
+ * @param {object[]} projeteis A lista de projeteis para se checar colisões
+ * @returns 
+ */
 const removerColisoes = (inimigos, projeteis) => {
     const objetosParaRemover = checarTodasColisoes(inimigos,projeteis);
 
     return inimigos.filter((x) => objetosParaRemover.indexOf(x) == -1);
 }
 
+/**
+ * 
+ * @param {object[]} inimigos 
+ * @param {object[]} projeteis 
+ * @returns 
+ */
 const checarTodasColisoes = (inimigos, projeteis) => {
     const [a, ...as] = inimigos;
     const [b, ...bs] = projeteis;

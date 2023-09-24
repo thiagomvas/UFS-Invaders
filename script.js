@@ -4,7 +4,7 @@ const ctx = canvas.getContext('2d');
 // Configurações
 const FPSDesejado = 60;
 const velocidadeNave = 3;
-const velocidadeProjeteis = -1;
+const velocidadeProjeteis = -10;
 const distNaveParedeMinima = 10; // Distancia minima entre a nave e a parede (basicamente a largura de uma parede imaginaria nos lados)
 
 var EstadoDeJogo = {
@@ -20,7 +20,7 @@ var EstadoDeJogo = {
         x: 400,
         y: canvas.clientHeight - 100,
     },
-    inimigos: [{x: 0, y: 0}],
+    inimigos: [{x: 0, y: 0, raio: 25}],
     projeteis: [],
 }
 
@@ -75,15 +75,23 @@ const update = () => {
         const p1posX = EstadoDeJogo.jogador1.x;
         const p2Input = EstadoDeJogo.jogador2.input;
         const p2posX = EstadoDeJogo.jogador2.x;
+
         ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientWidth);
-        EstadoDeJogo.inimigos = EstadoDeJogo.inimigos.map((x) => moverInimigo(x, 600 + Math.cos(Date.now()/250) * 500, 400 + Math.sin(Date.now()/450) * 300))
+
+        EstadoDeJogo.inimigos = EstadoDeJogo.inimigos.map((inim) => moverInimigo(inim, inim.x, inim.y + 1))
+        EstadoDeJogo.inimigos = removerForaDoMapa(EstadoDeJogo.inimigos);
 
         EstadoDeJogo.projeteis = EstadoDeJogo.projeteis.map((proj) => moverProjetil(proj, velocidadeProjeteis))
+        EstadoDeJogo.projeteis = removerForaDoMapa(EstadoDeJogo.projeteis);
 
         desenharProjeteisRecursivo(EstadoDeJogo.projeteis, '#FF00FF')
+        desenharInimigosRecursivo(EstadoDeJogo.inimigos, '#FFFFFF');
+
+
 
         desenharNave(EstadoDeJogo.jogador1.x, EstadoDeJogo.jogador1.y, '#0000FF'); // Jogador 1
         desenharNave(EstadoDeJogo.jogador2.x, EstadoDeJogo.jogador2.y, '#FF0000'); // Jogador 2
+
         EstadoDeJogo.jogador1.x = moverNave(p1posX, p1Input * velocidadeNave);
         EstadoDeJogo.jogador2.x = moverNave(p2posX, p2Input * velocidadeNave);
 
@@ -108,7 +116,7 @@ const moverProjetil = (projetil, deltaY) => {return {...projetil, x: projetil.x,
 
 const desenharProjeteisRecursivo = (projeteis, cor) => { //função base que desenha os projeteis  
     const [projetil, ...xs] = projeteis;
-    if(typeof projetil == 'undefined') return 0; //se não forem adicionados novos projeteis a lista, nada acontece 
+    if(indef(projetil)) return 0; //se não forem adicionados novos projeteis a lista, nada acontece 
     ctx.beginPath(); 
     ctx.arc(projetil.x, projetil.y, 5, 0, 2 * Math.PI); 
     ctx.closePath();
@@ -116,6 +124,31 @@ const desenharProjeteisRecursivo = (projeteis, cor) => { //função base que des
     ctx.fill();
 
     desenharProjeteisRecursivo(xs, cor);
+}
+
+const desenharInimigosRecursivo = (inimigos, cor) => {
+
+    const [inimigo, ...xs] = inimigos;
+    if(indef(inimigo)) return 0;
+
+    ctx.beginPath();
+    ctx.arc(inimigo.x, inimigo.y, inimigo.raio, 0, 2 * Math.PI);
+    ctx.closePath();
+    ctx.strokeStyle = ctx.fillStyle = cor;
+    ctx.fill();
+
+    desenharInimigosRecursivo(xs, cor);
+}
+
+const removerForaDoMapa = ([elem, ...xs]) => {
+    if(indef(elem)) return [];
+
+    if(elem.x < 0 // Saiu do mapa pela esquerda
+    || elem.x > canvas.clientWidth // Saiu do mapa pela direita
+    || elem.y < 0 // Saiu do mapa por cima
+    || elem.y > canvas.clientHeight) // Saiu do mapa por baixo
+    return [...removerForaDoMapa(xs)]
+    else return [elem, ...removerForaDoMapa(xs)];
 }
 
 

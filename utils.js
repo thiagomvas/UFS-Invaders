@@ -13,3 +13,5 @@ const senCosRecursivo = (valor, camadas) => {
 const criarProjetil = (xpos, ypos) => {return {x: xpos, y: ypos}}; // função base que cria um novo projetil
 
 const addNaLista = (lista, novoelemento) => [...lista, novoelemento]; // função que adiciona os novos projeteis a serem lançados, dentro da lista de projeteis do EstadoDeJogo
+
+const indef = (x) => typeof x == 'undefined';

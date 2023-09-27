@@ -28,7 +28,8 @@ var EstadoDeJogo = {
     },
     jogadorVencedor: 0,
     inimigos: [],
-    projeteis: [],
+    projeteis1: [],
+    projeteis2: [],
     proximoSpawn: 0,
 }
 
@@ -42,7 +43,7 @@ document.addEventListener("keydown", (event) => {
     else if(event.key.toUpperCase() == "W") // W
         {
             const projetil = criarProjetil(EstadoDeJogo.jogador1.x, EstadoDeJogo.jogador1.y, 5); //cria um novo projetil e o adiciona á lista de disparos realizados, quando o jogador 1 clica na tecla "W"
-            EstadoDeJogo.projeteis = addNaLista(EstadoDeJogo.projeteis, projetil);
+            EstadoDeJogo.projeteis1 = addNaLista(EstadoDeJogo.projeteis1, projetil);
         }
 
     if(event.key === "ArrowLeft") // Seta Esquerda
@@ -52,7 +53,7 @@ document.addEventListener("keydown", (event) => {
     else if(event.key == "ArrowUp") // Seta para cima
     {
         const projetil = criarProjetil(EstadoDeJogo.jogador2.x, EstadoDeJogo.jogador2.y, 5); //cria um novo projetil e o adiciona á lista de disparos realizados, quando o jogador 2 clica na tecla "ArrowUp"
-        EstadoDeJogo.projeteis = addNaLista(EstadoDeJogo.projeteis, projetil);
+        EstadoDeJogo.projeteis2 = addNaLista(EstadoDeJogo.projeteis2, projetil);
     }
 
     // INPUT JOGADOR 2 (Mesma logica que o jogador 1)
@@ -101,11 +102,14 @@ const update = () => {
         EstadoDeJogo.inimigos = removerForaDoMapa(EstadoDeJogo.inimigos);
 
         // Mover os projeteis e remover os que sairem do mapa
-        EstadoDeJogo.projeteis = EstadoDeJogo.projeteis.map((proj) => moverProjetil(proj, velocidadeProjeteis/FPSDesejado))
-        EstadoDeJogo.projeteis = removerForaDoMapa(EstadoDeJogo.projeteis);
+        EstadoDeJogo.projeteis1 = EstadoDeJogo.projeteis1.map((proj) => moverProjetil(proj, velocidadeProjeteis/FPSDesejado))
+        EstadoDeJogo.projeteis2 = EstadoDeJogo.projeteis2.map((proj) => moverProjetil(proj, velocidadeProjeteis/FPSDesejado))
+        EstadoDeJogo.projeteis1 = removerForaDoMapa(EstadoDeJogo.projeteis1)
+        EstadoDeJogo.projeteis2 = removerForaDoMapa(EstadoDeJogo.projeteis2);
 
         // Desenhar os projeteis e inimigos
-        desenharProjeteisRecursivo(EstadoDeJogo.projeteis, '#FF00FF')
+        desenharProjeteisRecursivo(EstadoDeJogo.projeteis1, '#FF00FF')
+        desenharProjeteisRecursivo(EstadoDeJogo.projeteis2, '#FF00FF')
         desenharInimigosRecursivo(EstadoDeJogo.inimigos, '#FFFFFF');
 
         // Desenhar os jogadores
@@ -124,17 +128,27 @@ const update = () => {
         {
             case 1:
                 ctx.font = "30px Arial"
-                ctx.fillText("Jogador 1 (AZUL) Ganhou!!!", canvas.clientWidth/2, canvas.clientHeight/2)
+                ctx.fillText("Jogador 1 (AZUL) Ganhou!!! ", canvas.clientWidth/2, canvas.clientHeight/2)
+                ctx.fillText("Pontos:", (canvas.clientWidth/2)+25, (canvas.clientHeight/2)+40)
+                ctx.fillText(EstadoDeJogo.jogador1.pontos, (canvas.clientWidth/2)+250, (canvas.clientHeight/2)+50)
                 break;
             case 2:
                 ctx.font = "30px Arial"
-                ctx.fillText("Jogador 2 (VERMELHO) Ganhou!!!", canvas.clientWidth/2, canvas.clientHeight/2)
+                ctx.fillText("Jogador 2 (VERMELHO) Ganhou!!! ", canvas.clientWidth/2, canvas.clientHeight/2)
+                ctx.fillText("Pontos:", (canvas.clientWidth/2)+25, (canvas.clientHeight/2)+40)
+                ctx.fillText(EstadoDeJogo.jogador2.pontos, (canvas.clientWidth/2)+250, (canvas.clientHeight/2)+50)
                 break;
         }
 
         // Remove os inimigos que colidirem com os projeteis
-        EstadoDeJogo.inimigos = removerColisoes(EstadoDeJogo.inimigos, EstadoDeJogo.projeteis);
-
+        if(checarTodasColisoes(EstadoDeJogo.inimigos,EstadoDeJogo.projeteis1).length>0){ 
+            EstadoDeJogo.jogador1.pontos += 1
+            EstadoDeJogo.inimigos = removerColisoes(EstadoDeJogo.inimigos, EstadoDeJogo.projeteis1)
+           }         
+            if(checarTodasColisoes(EstadoDeJogo.inimigos,EstadoDeJogo.projeteis2).length>0){ 
+            EstadoDeJogo.jogador2.pontos += 1
+            EstadoDeJogo.inimigos = removerColisoes(EstadoDeJogo.inimigos, EstadoDeJogo.projeteis2)
+           }   
     }
     setInterval(frame, 1/FPSDesejado);
 

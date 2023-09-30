@@ -221,16 +221,16 @@ const desenharInimigosRecursivo = (inimigos, cor) => {
 
         //Começando a desenhar o círculo do asteroide.
         ctx.beginPath();
-        ctx.arc(inimigo.x, inimigo.y, inimigo.raio, 0, 2 * Math.PI);
+        ctx.arc(inimigo.x, inimigo.y,inimigo.raio, 0, 2 * Math.PI);
         ctx.closePath();
         ctx.strokeStyle=ctx.fillStyle="#F8F8FF"
         ctx.fill();
         
         //Primeiro triângulo da parte interna do círculo.
         ctx.beginPath();
-        ctx.moveTo(inimigo.x-23,inimigo.y+20);//Ponta de baixo do triângulo.
-        ctx.lineTo (inimigo.x-5,inimigo.y-30);//Ponta de cima do triângulo.
-        ctx.lineTo (inimigo.x-28,inimigo.y-15);//Ponta do meio do triângulo.
+        ctx.moveTo(inimigo.x-(inimigo.raio-2),inimigo.y+(inimigo.raio-5));//Ponta de baixo do triângulo.
+        ctx.lineTo (inimigo.x-(inimigo.raio-20),inimigo.y-(inimigo.raio+5));//Ponta de cima do triângulo.
+        ctx.lineTo (inimigo.x-(inimigo.raio+3),inimigo.y-(inimigo.raio-10));//Ponta do meio do triângulo.
         ctx.closePath();
         ctx.strokeStyle=ctx.fillStyle="#000000"
         ctx.fill();
@@ -238,8 +238,8 @@ const desenharInimigosRecursivo = (inimigos, cor) => {
         //Pegundo triangulo da parte interna do círculo.
         ctx.beginPath();
         ctx.moveTo(inimigo.x,inimigo.y);//Ponta do triângulo localizada interna ao círculo.
-        ctx.lineTo (inimigo.x+28,inimigo.y-10);//Ponta do triângulo localizada na parte de baixo e  externa ao círculo.
-        ctx.lineTo(inimigo.x+23,inimigo.y+20) ;//Ponta do triângulo localizada na parte de cimae externa ao círculo. 
+        ctx.lineTo (inimigo.x+(inimigo.raio+3),inimigo.y-(inimigo.raio-15));//Ponta do triângulo localizada na parte de baixo e  externa ao círculo.
+        ctx.lineTo(inimigo.x+(inimigo.raio-2),inimigo.y+(inimigo.raio-5)) ;//Ponta do triângulo localizada na parte de cimae externa ao círculo. 
         ctx.closePath();
         ctx.strokeStyle=ctx.fillStyle="#000000"
         ctx.fill();

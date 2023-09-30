@@ -2,12 +2,15 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 // Configurações
-const FPSDesejado = 60;
-const velocidadeNave = 2;
-const velocidadeProjeteis = -250; 
-const distNaveParedeMinima = 10; // Distancia minima entre a nave e a parede (basicamente a largura de uma parede imaginaria nos lados)
-const velocidadeInimigos = 50 //velocidade de aproximação do inimigo as naves dos jogadores
-const delaySpawnInimigos = 1500;
+const FPSDesejado = 60;                 // O valor do FPS(Frames Per Second) desejado
+const velocidadeNave = 2;               // Velocidade de movimento da nave
+const velocidadeProjeteis = -250;       // Velocidade dos projeteis
+const distNaveParedeMinima = 10;        // Distancia minima entre a nave e a parede (basicamente a largura de uma parede imaginaria nos lados)
+const velocidadeInimigos = 50           //velocidade de aproximação do inimigo as naves dos jogadores
+const delaySpawnInimigos = 1500;        // Delay base de spawn para os inimigos
+const funcoesDeMovimento = [            // Funções de movimento que serão utilizado pelos inimigos.
+    (x, xI, y, yI) => x,
+]
 
 // Objeto que contem todos os objetos do jogo
 var EstadoDeJogo = {
@@ -67,7 +70,6 @@ const update = () => {
     EstadoDeJogo.horaInicial = Date.now() //contador de tempo do jogo
 
     const frame = () => {       //Tudo que quiser fazer por frame façam aqui dentro dessa função
-
         // Constantes que representam o input e posições no eixo X de cada jogador
         const p1Input = EstadoDeJogo.jogador1.input;
         const p1posX = EstadoDeJogo.jogador1.x;
@@ -91,14 +93,14 @@ const update = () => {
 
             const quantidade = Math.floor(Math.random() * 5 * dificuldade)
 
-            EstadoDeJogo.inimigos = [...EstadoDeJogo.inimigos, ...invocarInimigosRecursivo(EstadoDeJogo.inimigos, quantidade)]
+            EstadoDeJogo.inimigos = [...EstadoDeJogo.inimigos, ...invocarInimigosRecursivo(EstadoDeJogo.inimigos, quantidade, funcoesDeMovimento)]
         }
 
         if(EstadoDeJogo.inimigos.filter((x) => checarColisao(EstadoDeJogo.jogador1,x)).length > 0) EstadoDeJogo.jogadorVencedor = 2;
         if(EstadoDeJogo.inimigos.filter((x) => checarColisao(EstadoDeJogo.jogador2,x)).length > 0) EstadoDeJogo.jogadorVencedor = 1;
 
         // Mover os inimigos e remover os que sairem do mapa
-        EstadoDeJogo.inimigos = EstadoDeJogo.inimigos.map((inim) => moverInimigo(inim, inim.x, inim.y + velocidadeInimigos*dificuldade / FPSDesejado)) 
+        EstadoDeJogo.inimigos = EstadoDeJogo.inimigos.map((inim) => moverInimigo(inim, velocidadeInimigos, dificuldade / FPSDesejado)) 
         EstadoDeJogo.inimigos = removerForaDoMapa(EstadoDeJogo.inimigos);
 
         // Mover os projeteis e remover os que sairem do mapa
@@ -158,12 +160,14 @@ const update = () => {
 /**
  * Move um determinado inimigo para o ponto (`deltaX`, `deltaY`) no plano XY
  * @param {object} inimigo O objeto do inimigo que será movido
- * @param {number} deltaX Coordenadas no eixo X
- * @param {number} deltaY Coordenadas no eixo Y
+ * @param {number} velocidade Coordenadas no eixo X
+ * @param {number} dificuldade Coordenadas no eixo Y
  * @returns
  */
-const moverInimigo = (inimigo, deltaX, deltaY) => {
-    return {...inimigo, x: deltaX, y: deltaY};
+const moverInimigo = (inimigo, velocidade, dificuldade) => {
+    const novoX = inimigo.funcaoMovimentoX(inimigo.x, inimigo.xInicial, inimigo.y, inimigo.yInicial);
+    const novoY = inimigo.y + velocidade * dificuldade
+    return {...inimigo, x: novoX, y: novoY};
 }
 
 /**
@@ -280,16 +284,19 @@ const calcularProximoSpawn = (tempoDeJogo, delayAtual, dificuldade) => tempoDeJo
  * Retorna uma lista de inimigos, com a inclusão de `quantidade` inimigos. Ação feita por meio de recursividade
  * @param {object[]} inimigos A lista de inimigos para se incluir a nova horda.
  * @param {number} quantidade A quantidade de inimigos na nova horda
+ * @param {function[]} funcoesDeMovimento As possiveis funções de movimento que os inimigos podem usar
  * @returns 
  */
-const invocarInimigosRecursivo = (inimigos, quantidade) => {
+const invocarInimigosRecursivo = (inimigos, quantidade, funcoesDeMovimento) => {
     if(quantidade <= 0) return [];
     
+    const rand = (Math.sin(quantidade + Date.now()) + Math.cos((quantidade + Date.now())/3) + Math.sin((quantidade + Date.now())/9))
     const posicaoX = canvas.clientWidth/2 +  (Math.sin(quantidade + Date.now()) + Math.cos((quantidade + Date.now())/3) + Math.sin((quantidade + Date.now())/9)) * canvas.clientWidth/2
     const raio = Math.abs(25 + senCosRecursivo(quantidade + Date.now(), 3) * 15);
+    const funcMovimento = selecionarItemAleatorio(funcoesDeMovimento, rand)
 
-    const inimigo = criarInimigo(posicaoX, 100, raio);
-    return [inimigo, ...invocarInimigosRecursivo(inimigos, quantidade - 1)]
+    const inimigo = criarInimigo(posicaoX, 1, raio, funcMovimento);
+    return [inimigo, ...invocarInimigosRecursivo(inimigos, quantidade - 1, funcoesDeMovimento)]
 }
 
 /**

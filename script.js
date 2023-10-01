@@ -32,7 +32,7 @@ var EstadoDeJogo = {
     jogadorVencedor: 0,
     inimigos: [],
     projeteis1: [],
-    projeteis2: [],
+    projeteis2: [],//a criação de duas lsitas de projeteis foi necessaria para a identificação da origem do objeto
     proximoSpawn: 0,
 }
 
@@ -106,8 +106,8 @@ const update = () => {
         // Mover os projeteis e remover os que sairem do mapa
         EstadoDeJogo.projeteis1 = EstadoDeJogo.projeteis1.map((proj) => moverProjetil(proj, velocidadeProjeteis/FPSDesejado))
         EstadoDeJogo.projeteis2 = EstadoDeJogo.projeteis2.map((proj) => moverProjetil(proj, velocidadeProjeteis/FPSDesejado))
-        EstadoDeJogo.projeteis1 = removerForaDoMapa(EstadoDeJogo.projeteis1)
-        EstadoDeJogo.projeteis2 = removerForaDoMapa(EstadoDeJogo.projeteis2);
+        EstadoDeJogo.projeteis1 = removerForaDoMapa(EstadoDeJogo.projeteis1);
+        EstadoDeJogo.projeteis2 = removerForaDoMapa(EstadoDeJogo.projeteis2);//necessario a repetição para verificar cada projetil
 
         // Desenhar os projeteis e inimigos
         desenharProjeteisRecursivo(EstadoDeJogo.projeteis1, '#FF00FF')
@@ -142,15 +142,17 @@ const update = () => {
                 break;
         }
 
-        // Remove os inimigos que colidirem com os projeteis
+        // Remove os inimigos que colidirem com os projeteis e soma pontos
         if(checarTodasColisoes(EstadoDeJogo.inimigos,EstadoDeJogo.projeteis1).length>0){ 
             EstadoDeJogo.jogador1.pontos += 1
             EstadoDeJogo.inimigos = removerColisoes(EstadoDeJogo.inimigos, EstadoDeJogo.projeteis1)
-           }         
+           }  /*essa condição utiliza a verificação das colisões para ter a certeza que um inimigo foi acertado, e por qual jogador, 
+           para remover ele e somar 1 aos pontos acumulados do player. 
+           Essa parte da soma acaba, infelizmente quebrando ao paradigama funcional*/       
             if(checarTodasColisoes(EstadoDeJogo.inimigos,EstadoDeJogo.projeteis2).length>0){ 
             EstadoDeJogo.jogador2.pontos += 1
             EstadoDeJogo.inimigos = removerColisoes(EstadoDeJogo.inimigos, EstadoDeJogo.projeteis2)
-           }   
+           } //faz o mesmo checkup da função anterior  porém aplicado ao jogador dois
     }
     setInterval(frame, 1/FPSDesejado);
 

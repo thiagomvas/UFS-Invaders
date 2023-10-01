@@ -6,6 +6,6 @@ Integrantes do projeto:
 - Thiago Menezes Vasconcelos
 - Alícia Vitória Sousa Santos
 - José Elio Leite Santana
-- Nicolas Mateus
+- Nicolas Mateus Ferreira de Jesus
 
 

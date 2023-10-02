@@ -12,7 +12,18 @@
 o tamnho tem propositalmente o mesmo tamanho do canvas para ficar totalmente coberto, porém com uma uma borda um pouco menos arredondada
 isso faz com que ele fique totalmente dentro do canvas principal e com o rgba do background tendo uma transparencia de 0.13 da uma sensação
 de vidro, imitando as televisões de tubo dos arcades ou dando a sensação que a ação esta sendo vista da janela de uma nave*/
-  
+#vidro2{
+  width:850px;
+  height:150px;
+  border-radius: 38px;
+  border: solid 2px rgba(225,225,225,0.3);
+  background: rgba(225,225,225,0.13);
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform:translate(-50%,-50%);
+}
+/* Adicionando uma nova estrutura visual "vidro2", para a tela de pontuação na parte superior do jogo, com o intuto de informar o placar aos jogadores*/
   #canvas{
       background: black;
       border-radius: 50px;
@@ -26,5 +37,16 @@ de vidro, imitando as televisões de tubo dos arcades ou dando a sensação que 
   }/*aqui é onde os personagens principais são mostrados e onde nosso jogo acontece, tem o plano de fundo preto,
   com uma borda roxa mais escura "border" e com uma sombra que por usar uma cor mais clara faz parece que luz esta sendo emitida.
   Ela também sua a propriedade flex e position absolute para sempre se manter ao centro*/
-  
+  #canvas2{
+    background: black;
+    border-radius: 50px;
+    border: solid 10px #191970;
+    display: flex;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform:translate(-50%,-50%);
+    box-shadow: 0 0 50px #6A5ACD, inset 0 0 50px #4F4F4F;
+}
+/* a adição dessa nova estrutura visual permite que a tela interativa localizada na parte superior que serve para a visualização do vencedor e dos pontos acumulados por ele, esse novo canvas2 foi necessario ser adicionado para que a visualização do primeiro canvas  não fosse afetada */
   body{ background-color: #483D8B;}/*modifica o corpo do site para ter um fundo roxo*/

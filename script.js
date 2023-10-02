@@ -1,6 +1,7 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-
+const canvas2 = document.getElementById('canvas2');// Adicionando novo "canvas2" para a tela de pontuação dos jogadores.
+const ctx2 = canvas2.getContext('2d');
 // Configurações
 const FPSDesejado = 60;                 // O valor do FPS(Frames Per Second) desejado
 const velocidadeNave = 2;               // Velocidade de movimento da nave
@@ -85,7 +86,7 @@ const update = () => {
 
         // Limpar o canvas
         ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientWidth);
-
+        ctx2.clearRect(0, 0, canvas2.clientWidth, canvas2.clientWidth);
         // Se estiver na hora de invocar novos inimigos e todo mundo estiver vivo, invoque inimigos
         if(deveInvocarInimigo(tempoDeJogoTotal, EstadoDeJogo.proximoSpawn) && EstadoDeJogo.jogadorVencedor == 0)
         {
@@ -128,17 +129,20 @@ const update = () => {
         // Caso algum dos jogadores tenha vencido, mostre quem ganhou
         switch(EstadoDeJogo.jogadorVencedor)
         {
+            
             case 1:
-                ctx.font = "30px Arial"
-                ctx.fillText("Jogador 1 (AZUL) Ganhou!!! ", canvas.clientWidth/2, canvas.clientHeight/2)
-                ctx.fillText("Pontos:", (canvas.clientWidth/2)+25, (canvas.clientHeight/2)+40)
-                ctx.fillText(EstadoDeJogo.jogador1.pontos, (canvas.clientWidth/2)+250, (canvas.clientHeight/2)+50)
+                ctx2.font = "30px Courier New"// Adicionando nova fonte de letra.
+                ctx2.fillText("Jogador 1 (AZUL) Ganhou!!! ", (canvas2.clientWidth/2)-415, (canvas2.clientHeight/2)-5)//Alterando parametros de altura para que o jogador1 e os seus pontos sejam mostradas na tela de pontuação.
+                ctx2.fillText("Pontos:", (canvas2.clientWidth/2)-415, (canvas2.clientHeight/2)+35)
+                ctx2.fillText(EstadoDeJogo.jogador1.pontos, (canvas2.clientWidth/2)+0, (canvas2.clientHeight/2)+40)
+                ctx2.fillStyle="#FFFF00"
                 break;
             case 2:
-                ctx.font = "30px Arial"
-                ctx.fillText("Jogador 2 (VERMELHO) Ganhou!!! ", canvas.clientWidth/2, canvas.clientHeight/2)
-                ctx.fillText("Pontos:", (canvas.clientWidth/2)+25, (canvas.clientHeight/2)+40)
-                ctx.fillText(EstadoDeJogo.jogador2.pontos, (canvas.clientWidth/2)+250, (canvas.clientHeight/2)+50)
+                ctx2.font = "30px Courier New"// Adicionando nova fonte de letra.
+                ctx2.fillText("Jogador 2 (VERMELHO) Ganhou!!! ", (canvas2.clientWidth/2)-415, (canvas2.clientHeight/2)-5)//Alterando parametros de altura para que o jogador1 e os seus pontos sejam mostradas na tela de pontuação.
+                ctx2.fillText("Pontos:", (canvas2.clientWidth/2)-415, (canvas2.clientHeight/2)+35)
+                ctx2.fillText(EstadoDeJogo.jogador2.pontos, (canvas2.clientWidth/2)+0, (canvas2.clientHeight/2)+40)
+                ctx2.fillStyle="#FFFF00"
                 break;
         }
 

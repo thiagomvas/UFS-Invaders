@@ -98,6 +98,18 @@ const removerDaLista = (lista, obj) => lista.filter((x) => x != obj);
 const selecionarItemAleatorio = (lista, seed) => {
     const valorPseudoAleatorio = Math.sin(seed) * 0.5 + 0.5;
     const index = Math.floor(valorPseudoAleatorio * lista.length);
-    console.log(`${lista.length} : ${index} : ${lista[index]}`)
     return lista[index];
+}
+
+const gerarNovoEstadoDeJogo = (horaInicial, jogador1, jogador2, jogadorVencedor, inimigos, projeteis1, projeteis2, proximoSpawn) => {
+    return {horaInicial, jogador1, jogador2, jogadorVencedor, inimigos, projeteis1, projeteis2, proximoSpawn}
+}
+
+const checarJogadorVencedor = (inimigos, jogador1, jogador2) => {
+    const colidiuComJogador1 = inimigos.filter((x) => checarColisao(jogador1,x)).length > 0;
+    const colidiuComJogador2 = inimigos.filter((x) => checarColisao(jogador2,x)).length > 0;
+
+    if(colidiuComJogador1) return 2;
+    else if(colidiuComJogador2) return 1;
+    else return 0;
 }

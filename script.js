@@ -14,28 +14,30 @@ const funcoesDeMovimento = [            // Funções de movimento que serão uti
 ]
 
 // Objeto que contem todos os objetos do jogo
-var EstadoDeJogo = {
-    horaInicial: 0,
-    jogador1: {
-        pontos: 0,
-        input: 1,
-        x: 200,
-        y: canvas.clientHeight - 100,
-        raio: 25,
-    },
-    jogador2: {
+const EstadoDeJogoPadrao = {
+    horaInicial: 0,                         // Horario inicial da partida
+    jogador1: {                             // Objeto que representa o jogador 1                                
+        pontos: 0,                          // Quantos pontos o jogador 1 tem
+        input: 1,                           // O input que representa a direção que o jogador se move (1 = direita, -1 = esquerda)
+        x: 200,                             // Posição no eixo X
+        y: canvas.clientHeight - 100,       // Posição no eixo Y     
+        raio: 25,                           // Raio de colisão    
+    },                                
+    jogador2: {                              // Objeto que representa o jogador 2, mesmos atributos que o jogador 1
         pontos: 0,
         input: -1,
         x: 400,
         y: canvas.clientHeight - 100,
         raio: 25,
     },
-    jogadorVencedor: 0,
-    inimigos: [],
-    projeteis1: [],
-    projeteis2: [],//a criação de duas lsitas de projeteis foi necessaria para a identificação da origem do objeto
-    proximoSpawn: 0,
+    jogadorVencedor: 0,                      // ID que representa quem ganhou (0 = Ninguem, 1 = Jogador 1, 2 = Jogador 2)
+    inimigos: [],                            // Lista de inimigos
+    projeteis1: [],                          // Lista de projeteis atirados pelo jogador 1
+    projeteis2: [],                          // Lista de projeteis atirados pelo jogador 2
+    proximoSpawn: 0,                         // Proximo horario para invocar inimigos
 }
+
+var EstadoDeJogo = EstadoDeJogoPadrao;
 
 // Checando as teclas apertadas
 document.addEventListener("keydown", (event) => {
@@ -48,6 +50,7 @@ document.addEventListener("keydown", (event) => {
         {
             const projetil = criarProjetil(EstadoDeJogo.jogador1.x, EstadoDeJogo.jogador1.y, 5); //cria um novo projetil e o adiciona á lista de disparos realizados, quando o jogador 1 clica na tecla "W"
             EstadoDeJogo.projeteis1 = addNaLista(EstadoDeJogo.projeteis1, projetil);
+
         }
 
     if(event.key === "ArrowLeft") // Seta Esquerda
@@ -71,15 +74,38 @@ const update = () => {
     EstadoDeJogo.horaInicial = Date.now() //contador de tempo do jogo
 
     const frame = () => {       //Tudo que quiser fazer por frame façam aqui dentro dessa função
-        // Constantes que representam o input e posições no eixo X de cada jogador
-        const p1Input = EstadoDeJogo.jogador1.input;
-        const p1posX = EstadoDeJogo.jogador1.x;
-        const p2Input = EstadoDeJogo.jogador2.input;
-        const p2posX = EstadoDeJogo.jogador2.x;
+
+        const estadoDeJogoAtual =   EstadoDeJogo;
+        const jogador1 =            estadoDeJogoAtual.jogador1;
+        const jogador2 =            estadoDeJogoAtual.jogador2;
+        const inimigos =            estadoDeJogoAtual.inimigos;
+        const projeteis1 =          estadoDeJogoAtual.projeteis1;
+        const projeteis2 =          estadoDeJogoAtual.projeteis2;
+        const proximoSpawn =        estadoDeJogoAtual.proximoSpawn;
+        const jogadorVencedor =     estadoDeJogoAtual.jogadorVencedor;
+        
+        switch(jogadorVencedor)
+        {
+            
+            case 1:
+                ctx2.font = "30px Courier New"// Adicionando nova fonte de letra.
+                ctx2.fillText("Jogador 1 (AZUL) Ganhou!!! ", (canvas2.clientWidth/2)-415, (canvas2.clientHeight/2)-5)//Alterando parametros de altura para que o jogador1 e os seus pontos sejam mostradas na tela de pontuação.
+                ctx2.fillText("Pontos:", (canvas2.clientWidth/2)-415, (canvas2.clientHeight/2)+35)
+                ctx2.fillText(jogador1.pontos, (canvas2.clientWidth/2)+0, (canvas2.clientHeight/2)+40)
+                ctx2.fillStyle="#FFFF00"
+                return;
+            case 2:
+                ctx2.font = "30px Courier New"// Adicionando nova fonte de letra.
+                ctx2.fillText("Jogador 2 (VERMELHO) Ganhou!!! ", (canvas2.clientWidth/2)-415, (canvas2.clientHeight/2)-5)//Alterando parametros de altura para que o jogador1 e os seus pontos sejam mostradas na tela de pontuação.
+                ctx2.fillText("Pontos:", (canvas2.clientWidth/2)-415, (canvas2.clientHeight/2)+35)
+                ctx2.fillText(jogador2.pontos, (canvas2.clientWidth/2)+0, (canvas2.clientHeight/2)+40)
+                ctx2.fillStyle="#FFFF00"
+                return;
+        }
 
 
         // Constante que tem como valor o tempo total de jogo em milisegundos
-        const tempoDeJogoTotal = Date.now() - EstadoDeJogo.horaInicial 
+        const tempoDeJogoTotal = Date.now() - estadoDeJogoAtual.horaInicial 
 
         // Constante que representa a dificuldade do jogo
         const dificuldade = dificuldadeInimigos(tempoDeJogoTotal/1000);
@@ -87,76 +113,65 @@ const update = () => {
         // Limpar o canvas
         ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientWidth);
         ctx2.clearRect(0, 0, canvas2.clientWidth, canvas2.clientWidth);
+
         // Se estiver na hora de invocar novos inimigos e todo mundo estiver vivo, invoque inimigos
-        if(deveInvocarInimigo(tempoDeJogoTotal, EstadoDeJogo.proximoSpawn) && EstadoDeJogo.jogadorVencedor == 0)
-        {
-            EstadoDeJogo.proximoSpawn = calcularProximoSpawn(tempoDeJogoTotal, EstadoDeJogo.proximoSpawn, dificuldade);
+        const novoHorarioDeSpawn = calcularProximoSpawn(tempoDeJogoTotal, proximoSpawn, dificuldade);
+        const quantidadeParaInvocar = Math.floor(5 * dificuldade);
+        const inimigosPosSpawn = deveInvocarInimigo(tempoDeJogoTotal, proximoSpawn) ? [...inimigos, ...invocarInimigosRecursivo(inimigos, quantidadeParaInvocar, funcoesDeMovimento)] : inimigos;
 
-            const quantidade = Math.floor(Math.random() * 5 * dificuldade)
+        // Checar se alguem ganhou
+        const novoJogadorVencedor = checarJogadorVencedor(inimigos, jogador1, jogador2)
 
-            EstadoDeJogo.inimigos = [...EstadoDeJogo.inimigos, ...invocarInimigosRecursivo(EstadoDeJogo.inimigos, quantidade, funcoesDeMovimento)]
-        }
+        // Calcular novas posições dos inimigos
+        const inimigosPosMovimento = inimigosPosSpawn.map((inim) => moverInimigo(inim, velocidadeInimigos, dificuldade / FPSDesejado)) 
+        const inimigosDentroDoMapa = removerForaDoMapa(inimigosPosMovimento);
 
-        if(EstadoDeJogo.inimigos.filter((x) => checarColisao(EstadoDeJogo.jogador1,x)).length > 0) EstadoDeJogo.jogadorVencedor = 2;
-        if(EstadoDeJogo.inimigos.filter((x) => checarColisao(EstadoDeJogo.jogador2,x)).length > 0) EstadoDeJogo.jogadorVencedor = 1;
-
-        // Mover os inimigos e remover os que sairem do mapa
-        EstadoDeJogo.inimigos = EstadoDeJogo.inimigos.map((inim) => moverInimigo(inim, velocidadeInimigos, dificuldade / FPSDesejado)) 
-        EstadoDeJogo.inimigos = removerForaDoMapa(EstadoDeJogo.inimigos);
-
-        // Mover os projeteis e remover os que sairem do mapa
-        EstadoDeJogo.projeteis1 = EstadoDeJogo.projeteis1.map((proj) => moverProjetil(proj, velocidadeProjeteis/FPSDesejado))
-        EstadoDeJogo.projeteis2 = EstadoDeJogo.projeteis2.map((proj) => moverProjetil(proj, velocidadeProjeteis/FPSDesejado))
-        EstadoDeJogo.projeteis1 = removerForaDoMapa(EstadoDeJogo.projeteis1);
-        EstadoDeJogo.projeteis2 = removerForaDoMapa(EstadoDeJogo.projeteis2);//necessario a repetição para verificar cada projetil
+        // Calcular novas posições para os projeteis
+        const projeteis1PosMovimento = projeteis1.map((proj) => moverProjetil(proj, velocidadeProjeteis/FPSDesejado))
+        const projeteis2PosMovimento = projeteis2.map((proj) => moverProjetil(proj, velocidadeProjeteis/FPSDesejado))
+        const projeteis1DentroDoMapa = removerForaDoMapa(projeteis1PosMovimento);
+        const projeteis2DentroDoMapa = removerForaDoMapa(projeteis2PosMovimento);//necessario a repetição para verificar cada projetil
 
         // Desenhar os projeteis e inimigos
-        desenharProjeteisRecursivo(EstadoDeJogo.projeteis1, '#FF00FF')
-        desenharProjeteisRecursivo(EstadoDeJogo.projeteis2, '#FF00FF')
-        desenharInimigosRecursivo(EstadoDeJogo.inimigos, '#FFFFFF');
+        desenharProjeteisRecursivo(projeteis1DentroDoMapa, '#FF00FF')
+        desenharProjeteisRecursivo(projeteis2DentroDoMapa, '#FF00FF')
+        desenharInimigosRecursivo(inimigosDentroDoMapa, '#FFFFFF');
 
         // Desenhar os jogadores
-        desenharNave(EstadoDeJogo.jogador1.x, EstadoDeJogo.jogador1.y, '#0000FF'); // Jogador 1
-        desenharNave(EstadoDeJogo.jogador2.x, EstadoDeJogo.jogador2.y, '#FF0000'); // Jogador 2
+        desenharNave(jogador1.x, jogador1.y, '#0000FF'); // Jogador 1
+        desenharNave(jogador2.x, jogador2.y, '#FF0000'); // Jogador 2
 
-        // Mover os jogadores se ambos estiverem vivos
-        if(EstadoDeJogo.jogadorVencedor < 1)
-        {
-            EstadoDeJogo.jogador1.x = moverNave(EstadoDeJogo.jogador1, p1Input * velocidadeNave);
-            EstadoDeJogo.jogador2.x = moverNave(EstadoDeJogo.jogador2, p2Input * velocidadeNave);
-        }
+        // Calcular as novas posições dos jogadores
+        const jogador1PosMovimento = moverNave(jogador1, jogador1.input * velocidadeNave);
+        const jogador2PosMovimento = moverNave(jogador2, jogador2.input * velocidadeNave);
 
-        // Caso algum dos jogadores tenha vencido, mostre quem ganhou
-        switch(EstadoDeJogo.jogadorVencedor)
-        {
-            
-            case 1:
-                ctx2.font = "30px Courier New"// Adicionando nova fonte de letra.
-                ctx2.fillText("Jogador 1 (AZUL) Ganhou!!! ", (canvas2.clientWidth/2)-415, (canvas2.clientHeight/2)-5)//Alterando parametros de altura para que o jogador1 e os seus pontos sejam mostradas na tela de pontuação.
-                ctx2.fillText("Pontos:", (canvas2.clientWidth/2)-415, (canvas2.clientHeight/2)+35)
-                ctx2.fillText(EstadoDeJogo.jogador1.pontos, (canvas2.clientWidth/2)+0, (canvas2.clientHeight/2)+40)
-                ctx2.fillStyle="#FFFF00"
-                break;
-            case 2:
-                ctx2.font = "30px Courier New"// Adicionando nova fonte de letra.
-                ctx2.fillText("Jogador 2 (VERMELHO) Ganhou!!! ", (canvas2.clientWidth/2)-415, (canvas2.clientHeight/2)-5)//Alterando parametros de altura para que o jogador1 e os seus pontos sejam mostradas na tela de pontuação.
-                ctx2.fillText("Pontos:", (canvas2.clientWidth/2)-415, (canvas2.clientHeight/2)+35)
-                ctx2.fillText(EstadoDeJogo.jogador2.pontos, (canvas2.clientWidth/2)+0, (canvas2.clientHeight/2)+40)
-                ctx2.fillStyle="#FFFF00"
-                break;
-        }
+        
+        // Calcular novos pontos caso algum dos projeteis de cada jogador atingir um inimigo
+        const jogador1AcertouAlgo = checarTodasColisoes(inimigos, projeteis1).length > 0
+        const jogador2AcertouAlgo = checarTodasColisoes(inimigos, projeteis2).length > 0
+        const jogador1Final = jogador1PosMovimento
+        
+        const jogador2Final = jogador2PosMovimento
+        
+        // Calcular os inimigos pos colisão
+        const inimigosPosColisaoComProj1 = jogador1AcertouAlgo ? removerColisoes(inimigosDentroDoMapa, projeteis1) : inimigosDentroDoMapa;
+        const inimigosPosColisaoComProj2 = jogador1AcertouAlgo ? removerColisoes(inimigosPosColisaoComProj1, projeteis2) : inimigosPosColisaoComProj1;
 
-        // Remove os inimigos que colidirem com os projeteis e soma pontos
-        if(checarTodasColisoes(EstadoDeJogo.inimigos,EstadoDeJogo.projeteis1).length>0){ 
-            EstadoDeJogo.jogador1.pontos += 1
-            EstadoDeJogo.inimigos = removerColisoes(EstadoDeJogo.inimigos, EstadoDeJogo.projeteis1)
-           }  /*essa condição utiliza a verificação das colisões para ter a certeza que um inimigo foi acertado, e por qual jogador, 
-           para remover ele e somar 1 aos pontos acumulados do player. 
-           Essa parte da soma acaba, infelizmente quebrando ao paradigama funcional*/       
-            if(checarTodasColisoes(EstadoDeJogo.inimigos,EstadoDeJogo.projeteis2).length>0){ 
-            EstadoDeJogo.jogador2.pontos += 1
-            EstadoDeJogo.inimigos = removerColisoes(EstadoDeJogo.inimigos, EstadoDeJogo.projeteis2)
-           } //faz o mesmo checkup da função anterior  porém aplicado ao jogador dois
+        // Definindo as listas de inimigos e projeteis finais apos todas as funções executarem.
+        const inimigosFinais = inimigosPosColisaoComProj2;
+        const projeteis1Finais = projeteis1DentroDoMapa;
+        const projeteis2Finais = projeteis2DentroDoMapa;
+        
+        const novoEstadoDeJogo = gerarNovoEstadoDeJogo(estadoDeJogoAtual.horaInicial, 
+                                                       jogador1Final, 
+                                                       jogador2Final,
+                                                       novoJogadorVencedor,
+                                                       inimigosFinais,
+                                                       projeteis1Finais,
+                                                       projeteis2Finais,
+                                                       novoHorarioDeSpawn);
+        EstadoDeJogo = novoEstadoDeJogo;
+        
     }
     setInterval(frame, 1/FPSDesejado);
 
@@ -183,9 +198,9 @@ const moverInimigo = (inimigo, velocidade, dificuldade) => {
  * @returns 
  */
 const moverNave = (nave, deltaX) => {
-    if(nave.x + deltaX <= 0) return canvas.clientWidth - 10; // Checa se vai sair do mundo pela esquerda
-    else if(nave.x + deltaX >= canvas.clientWidth - distNaveParedeMinima) return 10 // O mesmo para a direita;
-    else return nave.x + deltaX;
+    if(nave.x + deltaX <= 0) return {...nave, x: canvas.clientWidth - 10}; // Checa se vai sair do mundo pela esquerda
+    else if(nave.x + deltaX >= canvas.clientWidth - distNaveParedeMinima) return {...nave, x: 10} // O mesmo para a direita;
+    else return {...nave, x: nave.x + deltaX};
 }
 
 /**
@@ -298,7 +313,7 @@ const invocarInimigosRecursivo = (inimigos, quantidade, funcoesDeMovimento) => {
     
     const rand = (Math.sin(quantidade + Date.now()) + Math.cos((quantidade + Date.now())/3) + Math.sin((quantidade + Date.now())/9))
     const posicaoX = canvas.clientWidth/2 +  (Math.sin(quantidade + Date.now()) + Math.cos((quantidade + Date.now())/3) + Math.sin((quantidade + Date.now())/9)) * canvas.clientWidth/2
-    const raio = Math.abs(25 + senCosRecursivo(quantidade + Date.now(), 3) * 15);
+    const raio = Math.abs(30 + senCosRecursivo(quantidade + Date.now(), 3) * 10);
     const funcMovimento = selecionarItemAleatorio(funcoesDeMovimento, rand)
 
     const inimigo = criarInimigo(posicaoX, 1, raio, funcMovimento);
@@ -319,9 +334,9 @@ const removerColisoes = (inimigos, projeteis) => {
 }
 
 /**
- * 
- * @param {object[]} inimigos 
- * @param {object[]} projeteis 
+ * Checa se uma lista de inimigos colide com algum projetil 
+ * @param {object[]} inimigos Lista de inimigos
+ * @param {object[]} projeteis Lista de projeteis
  * @returns 
  */
 const checarTodasColisoes = (inimigos, projeteis) => {

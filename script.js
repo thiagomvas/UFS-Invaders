@@ -40,7 +40,10 @@ const EstadoDeJogoPadrao = {
     projeteis2: [],                          // Lista de projeteis atirados pelo jogador 2
     proximoSpawn: 0,                         // Proximo horario para invocar inimigos
 }
-
+const desaparecer=(button)=>{
+    document.getElementById("container").style.opacity=0.00
+    update();
+}
 var EstadoDeJogo = EstadoDeJogoPadrao;
 
 // Checando as teclas apertadas
@@ -352,7 +355,3 @@ const checarTodasColisoes = (inimigos, projeteis) => {
     else return [a, ...checarTodasColisoes(as, bs)]
 
 }
-
-
-
-update(); // Inicializando o loop de updates

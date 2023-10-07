@@ -11,6 +11,10 @@ const velocidadeInimigos = 50           //velocidade de aproximação do inimigo
 const delaySpawnInimigos = 1500;        // Delay base de spawn para os inimigos
 const funcoesDeMovimento = [            // Funções de movimento que serão utilizado pelos inimigos.
     (x, xI, y, yI) => x,
+    (x, xI, y, yI) => xI + Math.sin(x * 10 / 600),
+    (x, xI, y, yI) => xI + Math.sin(x * 1 / 70) * Math.cos(y * 1 / 200) * 100 ,
+    (x, xI, y, yI) => xI + Math.sin(y *1/50),
+    (x, xI, y, yI) => xI + yI + Math.sin(y *1/400) * Math.cos(x *1/800) * 100
 ]
 
 // Objeto que contem todos os objetos do jogo
@@ -22,7 +26,7 @@ const EstadoDeJogoPadrao = {
         x: 200,                             // Posição no eixo X
         y: canvas.clientHeight - 100,       // Posição no eixo Y     
         raio: 25,                           // Raio de colisão    
-    },                                
+    },
     jogador2: {                              // Objeto que representa o jogador 2, mesmos atributos que o jogador 1
         pontos: 0,
         input: -1,
@@ -42,22 +46,22 @@ var EstadoDeJogo = EstadoDeJogoPadrao;
 // Checando as teclas apertadas
 document.addEventListener("keydown", (event) => {
     // INPUT JOGADOR 1
-    if(event.key.toUpperCase() === "A") // Seta Esquerda
+    if (event.key.toUpperCase() === "A") // Seta Esquerda
         EstadoDeJogo.jogador1.input = -1
-    else if(event.key.toUpperCase() == "D") // Seta Direita
+    else if (event.key.toUpperCase() == "D") // Seta Direita
         EstadoDeJogo.jogador1.input = 1;
-    else if(event.key.toUpperCase() == "W") // W
-        {
-            const projetil = criarProjetil(EstadoDeJogo.jogador1.x, EstadoDeJogo.jogador1.y, 5); //cria um novo projetil e o adiciona á lista de disparos realizados, quando o jogador 1 clica na tecla "W"
-            EstadoDeJogo.projeteis1 = addNaLista(EstadoDeJogo.projeteis1, projetil);
+    else if (event.key.toUpperCase() == "W") // W
+    {
+        const projetil = criarProjetil(EstadoDeJogo.jogador1.x, EstadoDeJogo.jogador1.y, 5); //cria um novo projetil e o adiciona á lista de disparos realizados, quando o jogador 1 clica na tecla "W"
+        EstadoDeJogo.projeteis1 = addNaLista(EstadoDeJogo.projeteis1, projetil);
 
-        }
+    }
 
-    if(event.key === "ArrowLeft") // Seta Esquerda
+    if (event.key === "ArrowLeft") // Seta Esquerda
         EstadoDeJogo.jogador2.input = -1;
-    else if(event.key == "ArrowRight") // Seta Direita
+    else if (event.key == "ArrowRight") // Seta Direita
         EstadoDeJogo.jogador2.input = 1;
-    else if(event.key == "ArrowUp") // Seta para cima
+    else if (event.key == "ArrowUp") // Seta para cima
     {
         const projetil = criarProjetil(EstadoDeJogo.jogador2.x, EstadoDeJogo.jogador2.y, 5); //cria um novo projetil e o adiciona á lista de disparos realizados, quando o jogador 2 clica na tecla "ArrowUp"
         EstadoDeJogo.projeteis2 = addNaLista(EstadoDeJogo.projeteis2, projetil);
@@ -75,40 +79,39 @@ const update = () => {
 
     const frame = () => {       //Tudo que quiser fazer por frame façam aqui dentro dessa função
 
-        const estadoDeJogoAtual =   EstadoDeJogo;
-        const jogador1 =            estadoDeJogoAtual.jogador1;
-        const jogador2 =            estadoDeJogoAtual.jogador2;
-        const inimigos =            estadoDeJogoAtual.inimigos;
-        const projeteis1 =          estadoDeJogoAtual.projeteis1;
-        const projeteis2 =          estadoDeJogoAtual.projeteis2;
-        const proximoSpawn =        estadoDeJogoAtual.proximoSpawn;
-        const jogadorVencedor =     estadoDeJogoAtual.jogadorVencedor;
-        
-        switch(jogadorVencedor)
-        {
-            
+        const estadoDeJogoAtual = EstadoDeJogo;
+        const jogador1 = estadoDeJogoAtual.jogador1;
+        const jogador2 = estadoDeJogoAtual.jogador2;
+        const inimigos = estadoDeJogoAtual.inimigos;
+        const projeteis1 = estadoDeJogoAtual.projeteis1;
+        const projeteis2 = estadoDeJogoAtual.projeteis2;
+        const proximoSpawn = estadoDeJogoAtual.proximoSpawn;
+        const jogadorVencedor = estadoDeJogoAtual.jogadorVencedor;
+
+        switch (jogadorVencedor) {
+
             case 1:
                 ctx2.font = "30px Courier New"// Adicionando nova fonte de letra.
-                ctx2.fillText("Jogador 1 (AZUL) Ganhou!!! ", (canvas2.clientWidth/2)-415, (canvas2.clientHeight/2)-5)//Alterando parametros de altura para que o jogador1 e os seus pontos sejam mostradas na tela de pontuação.
-                ctx2.fillText("Pontos:", (canvas2.clientWidth/2)-415, (canvas2.clientHeight/2)+35)
-                ctx2.fillText(jogador1.pontos, (canvas2.clientWidth/2)+0, (canvas2.clientHeight/2)+40)
-                ctx2.fillStyle="#FFFF00"
+                ctx2.fillText("Jogador 1 (AZUL) Ganhou!!! ", (canvas2.clientWidth / 2) - 415, (canvas2.clientHeight / 2) - 5)//Alterando parametros de altura para que o jogador1 e os seus pontos sejam mostradas na tela de pontuação.
+                ctx2.fillText("Pontos:", (canvas2.clientWidth / 2) - 415, (canvas2.clientHeight / 2) + 35)
+                ctx2.fillText(jogador1.pontos, (canvas2.clientWidth / 2) + 0, (canvas2.clientHeight / 2) + 40)
+                ctx2.fillStyle = "#FFFF00"
                 return;
             case 2:
                 ctx2.font = "30px Courier New"// Adicionando nova fonte de letra.
-                ctx2.fillText("Jogador 2 (VERMELHO) Ganhou!!! ", (canvas2.clientWidth/2)-415, (canvas2.clientHeight/2)-5)//Alterando parametros de altura para que o jogador1 e os seus pontos sejam mostradas na tela de pontuação.
-                ctx2.fillText("Pontos:", (canvas2.clientWidth/2)-415, (canvas2.clientHeight/2)+35)
-                ctx2.fillText(jogador2.pontos, (canvas2.clientWidth/2)+0, (canvas2.clientHeight/2)+40)
-                ctx2.fillStyle="#FFFF00"
+                ctx2.fillText("Jogador 2 (VERMELHO) Ganhou!!! ", (canvas2.clientWidth / 2) - 415, (canvas2.clientHeight / 2) - 5)//Alterando parametros de altura para que o jogador1 e os seus pontos sejam mostradas na tela de pontuação.
+                ctx2.fillText("Pontos:", (canvas2.clientWidth / 2) - 415, (canvas2.clientHeight / 2) + 35)
+                ctx2.fillText(jogador2.pontos, (canvas2.clientWidth / 2) + 0, (canvas2.clientHeight / 2) + 40)
+                ctx2.fillStyle = "#FFFF00"
                 return;
         }
 
 
         // Constante que tem como valor o tempo total de jogo em milisegundos
-        const tempoDeJogoTotal = Date.now() - estadoDeJogoAtual.horaInicial 
+        const tempoDeJogoTotal = Date.now() - estadoDeJogoAtual.horaInicial
 
         // Constante que representa a dificuldade do jogo
-        const dificuldade = dificuldadeInimigos(tempoDeJogoTotal/1000);
+        const dificuldade = dificuldadeInimigos(tempoDeJogoTotal / 1000);
 
         // Limpar o canvas
         ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientWidth);
@@ -123,12 +126,12 @@ const update = () => {
         const novoJogadorVencedor = checarJogadorVencedor(inimigos, jogador1, jogador2)
 
         // Calcular novas posições dos inimigos
-        const inimigosPosMovimento = inimigosPosSpawn.map((inim) => moverInimigo(inim, velocidadeInimigos, dificuldade / FPSDesejado)) 
+        const inimigosPosMovimento = inimigosPosSpawn.map((inim) => moverInimigo(inim, velocidadeInimigos, dificuldade / FPSDesejado))
         const inimigosDentroDoMapa = removerForaDoMapa(inimigosPosMovimento);
 
         // Calcular novas posições para os projeteis
-        const projeteis1PosMovimento = projeteis1.map((proj) => moverProjetil(proj, velocidadeProjeteis/FPSDesejado))
-        const projeteis2PosMovimento = projeteis2.map((proj) => moverProjetil(proj, velocidadeProjeteis/FPSDesejado))
+        const projeteis1PosMovimento = projeteis1.map((proj) => moverProjetil(proj, velocidadeProjeteis / FPSDesejado))
+        const projeteis2PosMovimento = projeteis2.map((proj) => moverProjetil(proj, velocidadeProjeteis / FPSDesejado))
         const projeteis1DentroDoMapa = removerForaDoMapa(projeteis1PosMovimento);
         const projeteis2DentroDoMapa = removerForaDoMapa(projeteis2PosMovimento);//necessario a repetição para verificar cada projetil
 
@@ -145,14 +148,14 @@ const update = () => {
         const jogador1PosMovimento = moverNave(jogador1, jogador1.input * velocidadeNave);
         const jogador2PosMovimento = moverNave(jogador2, jogador2.input * velocidadeNave);
 
-        
+
         // Calcular novos pontos caso algum dos projeteis de cada jogador atingir um inimigo
         const jogador1AcertouAlgo = checarTodasColisoes(inimigos, projeteis1).length > 0
         const jogador2AcertouAlgo = checarTodasColisoes(inimigos, projeteis2).length > 0
         const jogador1Final = jogador1PosMovimento
-        
+
         const jogador2Final = jogador2PosMovimento
-        
+
         // Calcular os inimigos pos colisão
         const inimigosPosColisaoComProj1 = jogador1AcertouAlgo ? removerColisoes(inimigosDentroDoMapa, projeteis1) : inimigosDentroDoMapa;
         const inimigosPosColisaoComProj2 = jogador1AcertouAlgo ? removerColisoes(inimigosPosColisaoComProj1, projeteis2) : inimigosPosColisaoComProj1;
@@ -161,19 +164,19 @@ const update = () => {
         const inimigosFinais = inimigosPosColisaoComProj2;
         const projeteis1Finais = projeteis1DentroDoMapa;
         const projeteis2Finais = projeteis2DentroDoMapa;
-        
-        const novoEstadoDeJogo = gerarNovoEstadoDeJogo(estadoDeJogoAtual.horaInicial, 
-                                                       jogador1Final, 
-                                                       jogador2Final,
-                                                       novoJogadorVencedor,
-                                                       inimigosFinais,
-                                                       projeteis1Finais,
-                                                       projeteis2Finais,
-                                                       novoHorarioDeSpawn);
+
+        const novoEstadoDeJogo = gerarNovoEstadoDeJogo(estadoDeJogoAtual.horaInicial,
+            jogador1Final,
+            jogador2Final,
+            novoJogadorVencedor,
+            inimigosFinais,
+            projeteis1Finais,
+            projeteis2Finais,
+            novoHorarioDeSpawn);
         EstadoDeJogo = novoEstadoDeJogo;
-        
+
     }
-    setInterval(frame, 1/FPSDesejado);
+    setInterval(frame, 1 / FPSDesejado);
 
 }
 
@@ -188,7 +191,7 @@ const update = () => {
 const moverInimigo = (inimigo, velocidade, dificuldade) => {
     const novoX = inimigo.funcaoMovimentoX(inimigo.x, inimigo.xInicial, inimigo.y, inimigo.yInicial);
     const novoY = inimigo.y + velocidade * dificuldade
-    return {...inimigo, x: novoX, y: novoY};
+    return { ...inimigo, x: novoX, y: novoY };
 }
 
 /**
@@ -198,9 +201,9 @@ const moverInimigo = (inimigo, velocidade, dificuldade) => {
  * @returns 
  */
 const moverNave = (nave, deltaX) => {
-    if(nave.x + deltaX <= 0) return {...nave, x: canvas.clientWidth - 10}; // Checa se vai sair do mundo pela esquerda
-    else if(nave.x + deltaX >= canvas.clientWidth - distNaveParedeMinima) return {...nave, x: 10} // O mesmo para a direita;
-    else return {...nave, x: nave.x + deltaX};
+    if (nave.x + deltaX <= 0) return { ...nave, x: canvas.clientWidth - 10 }; // Checa se vai sair do mundo pela esquerda
+    else if (nave.x + deltaX >= canvas.clientWidth - distNaveParedeMinima) return { ...nave, x: 10 } // O mesmo para a direita;
+    else return { ...nave, x: nave.x + deltaX };
 }
 
 /**
@@ -209,7 +212,7 @@ const moverNave = (nave, deltaX) => {
  * @param {number} deltaY Unidades para se mover no eixo Y
  * @returns 
  */
-const moverProjetil = (projetil, deltaY) => {return {...projetil, x: projetil.x, y: projetil.y + deltaY}}; 
+const moverProjetil = (projetil, deltaY) => { return { ...projetil, x: projetil.x, y: projetil.y + deltaY } };
 
 /**
  * Desenha uma lista de `projeteis` utilizando recursividade para repetir a ação em cada um dos elementos da lista
@@ -219,9 +222,9 @@ const moverProjetil = (projetil, deltaY) => {return {...projetil, x: projetil.x,
  */
 const desenharProjeteisRecursivo = (projeteis, cor) => { //função base que desenha os projeteis  
     const [projetil, ...xs] = projeteis;
-    if(indef(projetil)) return 0; //se não forem adicionados novos projeteis a lista, nada acontece 
-    ctx.beginPath(); 
-    ctx.arc(projetil.x, projetil.y, projetil.raio, 0, 2 * Math.PI); 
+    if (indef(projetil)) return 0; //se não forem adicionados novos projeteis a lista, nada acontece 
+    ctx.beginPath();
+    ctx.arc(projetil.x, projetil.y, projetil.raio, 0, 2 * Math.PI);
     ctx.closePath();
     ctx.strokeStyle = ctx.fillStyle = cor;
     ctx.fill();
@@ -238,33 +241,33 @@ const desenharProjeteisRecursivo = (projeteis, cor) => { //função base que des
 const desenharInimigosRecursivo = (inimigos, cor) => {
 
     const [inimigo, ...xs] = inimigos;
-    if(indef(inimigo)) return 0;
+    if (indef(inimigo)) return 0;
 
-        //Começando a desenhar o círculo do asteroide.
-        ctx.beginPath();
-        ctx.arc(inimigo.x, inimigo.y,inimigo.raio, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.strokeStyle=ctx.fillStyle="#F8F8FF"
-        ctx.fill();
-        
-        //Primeiro triângulo da parte interna do círculo.
-        ctx.beginPath();
-        ctx.moveTo(inimigo.x-(inimigo.raio-2),inimigo.y+(inimigo.raio-5));//Ponta de baixo do triângulo.
-        ctx.lineTo (inimigo.x-(inimigo.raio-20),inimigo.y-(inimigo.raio+5));//Ponta de cima do triângulo.
-        ctx.lineTo (inimigo.x-(inimigo.raio+3),inimigo.y-(inimigo.raio-10));//Ponta do meio do triângulo.
-        ctx.closePath();
-        ctx.strokeStyle=ctx.fillStyle="#000000"
-        ctx.fill();
-        
-        //Pegundo triangulo da parte interna do círculo.
-        ctx.beginPath();
-        ctx.moveTo(inimigo.x,inimigo.y);//Ponta do triângulo localizada interna ao círculo.
-        ctx.lineTo (inimigo.x+(inimigo.raio+3),inimigo.y-(inimigo.raio-15));//Ponta do triângulo localizada na parte de baixo e  externa ao círculo.
-        ctx.lineTo(inimigo.x+(inimigo.raio-2),inimigo.y+(inimigo.raio-5)) ;//Ponta do triângulo localizada na parte de cimae externa ao círculo. 
-        ctx.closePath();
-        ctx.strokeStyle=ctx.fillStyle="#000000"
-        ctx.fill();
-          
+    //Começando a desenhar o círculo do asteroide.
+    ctx.beginPath();
+    ctx.arc(inimigo.x, inimigo.y, inimigo.raio, 0, 2 * Math.PI);
+    ctx.closePath();
+    ctx.strokeStyle = ctx.fillStyle = "#F8F8FF"
+    ctx.fill();
+
+    //Primeiro triângulo da parte interna do círculo.
+    ctx.beginPath();
+    ctx.moveTo(inimigo.x - (inimigo.raio - 2), inimigo.y + (inimigo.raio - 5));//Ponta de baixo do triângulo.
+    ctx.lineTo(inimigo.x - (inimigo.raio - 20), inimigo.y - (inimigo.raio + 5));//Ponta de cima do triângulo.
+    ctx.lineTo(inimigo.x - (inimigo.raio + 3), inimigo.y - (inimigo.raio - 10));//Ponta do meio do triângulo.
+    ctx.closePath();
+    ctx.strokeStyle = ctx.fillStyle = "#000000"
+    ctx.fill();
+
+    //Pegundo triangulo da parte interna do círculo.
+    ctx.beginPath();
+    ctx.moveTo(inimigo.x, inimigo.y);//Ponta do triângulo localizada interna ao círculo.
+    ctx.lineTo(inimigo.x + (inimigo.raio + 3), inimigo.y - (inimigo.raio - 15));//Ponta do triângulo localizada na parte de baixo e  externa ao círculo.
+    ctx.lineTo(inimigo.x + (inimigo.raio - 2), inimigo.y + (inimigo.raio - 5));//Ponta do triângulo localizada na parte de cimae externa ao círculo. 
+    ctx.closePath();
+    ctx.strokeStyle = ctx.fillStyle = "#000000"
+    ctx.fill();
+
     desenharInimigosRecursivo(xs, cor);
 }
 
@@ -274,13 +277,13 @@ const desenharInimigosRecursivo = (inimigos, cor) => {
  * @returns 
  */
 const removerForaDoMapa = ([elem, ...xs]) => {
-    if(indef(elem)) return [];
+    if (indef(elem)) return [];
 
-    if(elem.x < 0 // Saiu do mapa pela esquerda
-    || elem.x > canvas.clientWidth // Saiu do mapa pela direita
-    || elem.y < 0 // Saiu do mapa por cima
-    || elem.y > canvas.clientHeight) // Saiu do mapa por baixo
-    return [...removerForaDoMapa(xs)]
+    if (elem.x < 0 // Saiu do mapa pela esquerda
+        || elem.x > canvas.clientWidth // Saiu do mapa pela direita
+        || elem.y < 0 // Saiu do mapa por cima
+        || elem.y > canvas.clientHeight) // Saiu do mapa por baixo
+        return [...removerForaDoMapa(xs)]
     else return [elem, ...removerForaDoMapa(xs)];
 }
 
@@ -299,7 +302,7 @@ const deveInvocarInimigo = (tempoDeJogo, delayAtual) => tempoDeJogo >= delayAtua
  * @param {number} dificuldade A dificuldade atual do jogo
  * @returns 
  */
-const calcularProximoSpawn = (tempoDeJogo, delayAtual, dificuldade) => tempoDeJogo >= delayAtual ? delaySpawnInimigos/dificuldade + delayAtual : delayAtual;
+const calcularProximoSpawn = (tempoDeJogo, delayAtual, dificuldade) => tempoDeJogo >= delayAtual ? delaySpawnInimigos / dificuldade + delayAtual : delayAtual;
 
 /**
  * Retorna uma lista de inimigos, com a inclusão de `quantidade` inimigos. Ação feita por meio de recursividade
@@ -309,10 +312,10 @@ const calcularProximoSpawn = (tempoDeJogo, delayAtual, dificuldade) => tempoDeJo
  * @returns 
  */
 const invocarInimigosRecursivo = (inimigos, quantidade, funcoesDeMovimento) => {
-    if(quantidade <= 0) return [];
-    
-    const rand = (Math.sin(quantidade + Date.now()) + Math.cos((quantidade + Date.now())/3) + Math.sin((quantidade + Date.now())/9))
-    const posicaoX = canvas.clientWidth/2 +  (Math.sin(quantidade + Date.now()) + Math.cos((quantidade + Date.now())/3) + Math.sin((quantidade + Date.now())/9)) * canvas.clientWidth/2
+    if (quantidade <= 0) return [];
+
+    const rand = (Math.sin(quantidade + Date.now()) + Math.cos((quantidade + Date.now()) / 3) + Math.sin((quantidade + Date.now()) / 9))
+    const posicaoX = canvas.clientWidth / 2 + (Math.sin(quantidade + Date.now()) + Math.cos((quantidade + Date.now()) / 3) + Math.sin((quantidade + Date.now()) / 9)) * canvas.clientWidth / 2
     const raio = Math.abs(30 + senCosRecursivo(quantidade + Date.now(), 3) * 10);
     const funcMovimento = selecionarItemAleatorio(funcoesDeMovimento, rand)
 
@@ -328,7 +331,7 @@ const invocarInimigosRecursivo = (inimigos, quantidade, funcoesDeMovimento) => {
  * @returns 
  */
 const removerColisoes = (inimigos, projeteis) => {
-    const objetosParaRemover = checarTodasColisoes(inimigos,projeteis);
+    const objetosParaRemover = checarTodasColisoes(inimigos, projeteis);
 
     return inimigos.filter((x) => objetosParaRemover.indexOf(x) == -1);
 }
@@ -343,9 +346,9 @@ const checarTodasColisoes = (inimigos, projeteis) => {
     const [a, ...as] = inimigos;
     const [b, ...bs] = projeteis;
 
-    if(indef(a)) return [];
-    if(indef(b)) return [...checarTodasColisoes(as, projeteis)]
-    if(!checarColisao(a, b)) return [...checarTodasColisoes(as, projeteis)] 
+    if (indef(a)) return [];
+    if (indef(b)) return [...checarTodasColisoes(as, projeteis)]
+    if (!checarColisao(a, b)) return [...checarTodasColisoes(as, projeteis)]
     else return [a, ...checarTodasColisoes(as, bs)]
 
 }

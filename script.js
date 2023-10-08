@@ -12,9 +12,9 @@ const delaySpawnInimigos = 1500;        // Delay base de spawn para os inimigos
 const funcoesDeMovimento = [            // Funções de movimento que serão utilizado pelos inimigos.
     (x, xI, y, yI) => x,
     (x, xI, y, yI) => xI + Math.sin(x * 10 / 600),
-    (x, xI, y, yI) => xI + Math.sin(x * 1 / 70) * Math.cos(y * 1 / 200) * 100 ,
-    (x, xI, y, yI) => xI + Math.sin(y *1/50),
-    (x, xI, y, yI) => xI + yI + Math.sin(y *1/400) * Math.cos(x *1/800) * 100
+    (x, xI, y, yI) => xI + Math.sin(x * 1 / 70) * Math.cos(y * 1 / 200) * 100,
+    (x, xI, y, yI) => xI + Math.sin(y * 1 / 50),
+    (x, xI, y, yI) => xI + yI + Math.sin(y * 1 / 400) * Math.cos(x * 1 / 800) * 100
 ]
 
 // Objeto que contem todos os objetos do jogo
@@ -40,11 +40,19 @@ const EstadoDeJogoPadrao = {
     projeteis2: [],                          // Lista de projeteis atirados pelo jogador 2
     proximoSpawn: 0,                         // Proximo horario para invocar inimigos
 }
-const desaparecer=(button)=>{
-    document.getElementById("container").style.opacity=0.00
+const desaparecer = (button) => {
+    document.getElementById("container").style.opacity = 0.00
     update();
 }
+
+
 var EstadoDeJogo = EstadoDeJogoPadrao;
+
+const botaoReiniciar =  document.getElementById("reiniciar")
+botaoReiniciar.addEventListener(("click") , () => {
+    const estadoDeJogoReiniciado = {...EstadoDeJogoPadrao, horaInicial: Date.now(), proximoSpawn: delaySpawnInimigos}
+    EstadoDeJogo = estadoDeJogoReiniciado;
+})
 
 // Checando as teclas apertadas
 document.addEventListener("keydown", (event) => {

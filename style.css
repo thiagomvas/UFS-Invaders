@@ -1,25 +1,25 @@
-#container{
+#container {
   background-color: black;
   border: solid 10px #191970;
   border-radius: 5%;
-  width: 1080px;
-  height: 900px;
+  width: 1250px;
+  height: 1000px;
   position: absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 6;
   opacity: auto;
 }
 
-#telaInicio{
-  width: 1080px;
-  height: 900px;
-  position:absolute;
-  top:0%;
+#telaInicio {
+  width: 1250px;
+  height: 800px;
+  position: absolute;
+  top: 0%;
 }
 
-#title{
+#title {
   font-size: 60px;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   font-weight: bold;
@@ -31,15 +31,15 @@
 
 
 
-.instrusao{
-  font-size:25px;
+.instrusao {
+  font-size: 25px;
   font-weight: bold;
-  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   width: 200px;
   height: 150px;
-  text-align :left;
+  text-align: left;
   text-indent: 10px;
-  position:absolute;
+  position: absolute;
   top: 81%;
   left: 50px;
   background-color: black;
@@ -48,15 +48,15 @@
   color: yellow;
 }
 
-.instrusao2{
-  font-size:25px;
+.instrusao2 {
+  font-size: 25px;
   font-weight: bold;
-  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   width: 200px;
   height: 200px;
-  text-align :left;
+  text-align: left;
   text-indent: 10px;
-  position:absolute;
+  position: absolute;
   top: 76%;
   left: 76%;
   background-color: black;
@@ -65,29 +65,29 @@
   color: yellow;
 }
 
-#historia{
+#historia {
   font-size: 35px;
-  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   position: absolute;
   text-align: left;
-  top:37%;
+  top: 37%;
   left: 20%;
-  width: 750px;
+  width: 800px;
   height: 200px;
   color: yellow;
 }
 
 
 
-#iniciar{
-  margin-top:60%;
-  margin-left:440px;
-  width:200px;
-  height:100px;
-  font-weight:bold;
+#iniciar {
+  margin-top: 60%;
+  margin-left: 440px;
+  width: 300px;
+  height: 100px;
+  font-weight: bold;
   border: solid 5px yellow;
-  font-size:30px;
-  border-radius:10%;
+  font-size: 30px;
+  border-radius: 10%;
   color: yellow;
   background: black;
 }
@@ -97,140 +97,230 @@
 
 
 
-div.ceu{
-  width:850px;
-  height:500px;
+div.ceu {
+  width: 1250px;
+  height: 900px;
   background: black;
-  position:absolute;
-  top:55%;
-  left:50%;
-  transform:translate(-50%,-50%);
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   border-radius: 38px;
 }
-div.estrelas{
-  background:rgba(225,225,225);
-  width:10px;
-  height:10px;
-  border-radius:50%;
+
+div.estrelas {
+  background: rgba(225, 225, 225);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
   position: absolute;
   top: 50px;
-  left:50px;
-  box-shadow: 78px 140px rgba(225,225,225),
-    100px 30px rgba(225,225,225),
-    50px 80px rgba(225,225,225),
-    160px 240px rgba(225,225,225),
-    165px 140px rgba(225,225,225),
-    20px 170px rgba(225,225,225),
-    78px 240px rgba(225,225,225),
-    610px 200px rgba(225,225,225),
-    50px 380px rgba(225,225,225),
-    115px 290px rgba(225,225,225),
-    665px 340px rgba(225,225,225),
-    20px 270px rgba(225,225,225),
-    200px 30px rgba(225,225,225),
-    250px 80px rgba(225,225,225),
-    415px 190px rgba(225,225,225),
-    365px 140px rgba(225,225,225),
-    220px 170px rgba(225,225,225),
-    278px 240px rgba(225,225,225),
-    700px 215px rgba(225,225,225),
-    250px 380px rgba(225,225,225),
-    315px 290px rgba(225,225,225),
-    365px 340px rgba(225,225,225),
-    220px 270px rgba(225,225,225),
-    300px 30px rgba(225,225,225),
-    350px 80px rgba(225,225,225),
-    560px 240px rgba(225,225,225),
-    465px 140px rgba(225,225,225),
-    320px 170px rgba(225,225,225),
-    478px 240px rgba(225,225,225),
-    350px 200px rgba(225,225,225),
-    650px 380px rgba(225,225,225),
-    615px 290px rgba(225,225,225),
-    500px 340px rgba(225,225,225),
-    700px 50px rgba(225,225,225),
-    500px 70px rgba(225,225,225),
-    610px 70px rgba(225,225,225),
-    720px 270px rgba(225,225,225);
-    
-    animation: anima-estrelas3 3s linear infinite, anima-estrelas1 3s linear infinite, anima-estrelas3 3s linear infinite, anima-estrelas2 3s linear infinite;
-    
+  left: 50px;
+  box-shadow: 78px 140px rgba(225, 225, 225),
+    100px 30px rgba(225, 225, 225),
+    50px 80px rgba(225, 225, 225),
+    160px 240px rgba(225, 225, 225),
+    165px 140px rgba(225, 225, 225),
+    20px 170px rgba(225, 225, 225),
+    78px 240px rgba(225, 225, 225),
+    610px 200px rgba(225, 225, 225),
+    50px 380px rgba(225, 225, 225),
+    115px 290px rgba(225, 225, 225),
+    665px 640px rgba(225, 225, 225),
+    20px 770px rgba(225, 225, 225),
+    200px 30px rgba(225, 225, 225),
+    250px 80px rgba(225, 225, 225),
+    415px 190px rgba(225, 225, 225),
+    365px 140px rgba(225, 225, 225),
+    220px 170px rgba(225, 225, 225),
+    278px 240px rgba(225, 225, 225),
+    700px 215px rgba(225, 225, 225),
+    250px 380px rgba(225, 225, 225),
+    315px 290px rgba(225, 225, 225),
+    365px 340px rgba(225, 225, 225),
+    220px 270px rgba(225, 225, 225),
+    300px 30px rgba(225, 225, 225),
+    350px 80px rgba(225, 225, 225),
+    560px 240px rgba(225, 225, 225),
+    465px 140px rgba(225, 225, 225),
+    320px 170px rgba(225, 225, 225),
+    478px 240px rgba(225, 225, 225),
+    350px 00px rgba(225, 225, 225),
+    650px 380px rgba(225, 225, 225),
+    615px 290px rgba(225, 225, 225),
+    500px 340px rgba(225, 225, 225),
+    700px 50px rgba(225, 225, 225),
+    500px 70px rgba(225, 225, 225),
+    610px 70px rgba(225, 225, 225),
+    39px 1030px rgba(225, 225, 225),
+    70px 999px rgba(225, 225, 225),
+    53px 667px rgba(225, 225, 225),
+    78px 557px rgba(225, 225, 225),
+    90px 750px rgba(225, 225, 225),
+    1000px 400px rgba(225, 225, 225),
+    1020px 300px rgba(225, 225, 225),
+    1200px 424px rgba(225, 225, 225),
+    990px 90px rgba(225, 225, 225),
+    950px 220px rgba(225, 225, 225),
+    800px 300px rgba(225, 225, 225),
+    750px 994px rgba(225, 225, 225),
+    800px 620px rgba(225, 225, 225),
+    1113px 756px rgba(225, 225, 225),
+    410px 10px rgba(225, 225, 225),
+    410px 410px rgba(225, 225, 225),
+    480px 430px rgba(225, 225, 225),
+    480px 430px rgba(225, 225, 225),
+    100px 400px rgba(225, 225, 225),
+    700px 600px rgba(225, 225, 225),
+    705px 500px rgba(225, 225, 225),
+    715px 750px rgba(225, 225, 225),
+    654px 200px rgba(225, 225, 225),
+    570px 600px rgba(225, 225, 225),
+    360px 650px rgba(225, 225, 225),
+    402px 500px rgba(225, 225, 225),
+    400px 590px rgba(225, 225, 225),
+    800px 700px rgba(225, 225, 225),
+    840px 20px rgba(225, 225, 225),
+    890px 50px rgba(225, 225, 225),
+    789px 70px rgba(225, 225, 225),
+    900px 10px rgba(225, 225, 225),
+    850px 150px rgba(225, 225, 225),
+    960px 450px rgba(225, 225, 225),
+    300px 600px rgba(225, 225, 225),
+    820px 754px rgba(225, 225, 225),
+    712px 650px rgba(225, 225, 225),
+    1104px 139px rgba(225, 225, 225),
+    1100px 650px rgba(225, 225, 225),
+    500px 800px rgba(225, 225, 225),
+    380px 670px rgba(225, 225, 225),
+    200px 700px rgba(225, 225, 225),
+    100px 800px rgba(225, 225, 225),
+    140px 790px rgba(225, 225, 225),
+    120px 650px rgba(225, 225, 225),
+    380px 770px rgba(225, 225, 225),
+    360px 480px rgba(225, 225, 225),
+    880px 580px rgba(225, 225, 225),
+    856px 499px rgba(225, 225, 225),
+    400px 500px rgba(225, 225, 225),
+    250px 500px rgba(225, 225, 225),
+    220px 570px rgba(225, 225, 225),
+    500px 570px rgba(225, 225, 225),
+    500px 670px rgba(225, 225, 225),
+    600px 770px rgba(225, 225, 225),
+    250px 770px rgba(225, 225, 225),
+    310px 720px rgba(225, 225, 225),
+    550px 500px rgba(225, 225, 225),
+    620px 506px rgba(225, 225, 225),
+    890px 405px rgba(225, 225, 225),
+    800px 405px rgba(225, 225, 225),
+    720px 424px rgba(225, 225, 225),
+    900px 730px rgba(225, 225, 225),
+    930px 660px rgba(225, 225, 225),
+    960px 780px rgba(225, 225, 225),
+    1020px 700px rgba(225, 225, 225),
+    1010px 580px rgba(225, 225, 225),
+    1080px 510px rgba(225, 225, 225),
+    1100px 360px rgba(225, 225, 225),
+    920px 300px rgba(225, 225, 225),
+    20px 450px rgba(225, 225, 225),
+    1120px 30px rgba(225, 225, 225),
+    1029px 200px rgba(225, 225, 225),
+    720px 270px rgba(225, 225, 225);
+
+
+  animation: anima-estrelas3 3s linear infinite, anima-estrelas1 3s linear infinite, anima-estrelas3 3s linear infinite, anima-estrelas2 3s linear infinite;
+
 }
- #vidro{
-      width:850px;
-      height:494px;
-      border-radius: 38px;
-      border: solid 2px rgba(225,225,225,0.3);
-      background: rgba(225,225,225,0.13);
-      position: absolute;
-      top: 55%;
-      left: 50%;
-      transform:translate(-50%,-50%);
-    }/*essa função faz com que uma camada de "vidro" seja sobre posta sobre o canvas principal o qual nos mostramos as naves e jogo em si
+
+#vidro {
+  width: 1250px;
+  height: 894px;
+  border-radius: 38px;
+  border: solid 2px rgba(225, 225, 225, 0.3);
+  background: rgba(225, 225, 225, 0.13);
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/*essa função faz com que uma camada de "vidro" seja sobre posta sobre o canvas principal o qual nos mostramos as naves e jogo em si
   o tamnho tem propositalmente o mesmo tamanho do canvas para ficar totalmente coberto, porém com uma uma borda um pouco menos arredondada
   isso faz com que ele fique totalmente dentro do canvas principal e com o rgba do background tendo uma transparencia de 0.13 da uma sensação
   de vidro, imitando as televisões de tubo dos arcades ou dando a sensação que a ação esta sendo vista da janela de uma nave*/
-  #vidro2{
-    width:850px;
-    height:100px;
-    border-radius: 38px;
-    border: solid 2px rgba(225,225,225,0.3);
-    background: rgba(225,225,225,0.13);
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform:translate(-50%,-50%);
-  }
-  /* Adicionando uma nova estrutura visual "vidro2", para a tela de pontuação na parte superior do jogo, com o intuto de informar o placar aos jogadores*/
-    #canvas{
-        background: rgba(0,0,0,0.1);
-        border-radius: 50px;
-        border: solid 10px #191970;
-        display: flex;
-        position: absolute;
-        top: 55%;
-        left: 50%;
-        transform:translate(-50%,-50%);
-        box-shadow: 0 0 50px #6A5ACD, inset 0 0 50px #4F4F4F;
-    }/*aqui é onde os personagens principais são mostrados e onde nosso jogo acontece, tem o plano de fundo preto,
+#vidro2 {
+  width: 850px;
+  height: 100px;
+  border-radius: 38px;
+  border: solid 2px rgba(225, 225, 225, 0.3);
+  background: rgba(225, 225, 225, 0.13);
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Adicionando uma nova estrutura visual "vidro2", para a tela de pontuação na parte superior do jogo, com o intuto de informar o placar aos jogadores*/
+#canvas {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
+  border: solid 10px #191970;
+  display: flex;
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 50px #6A5ACD, inset 0 0 50px #4F4F4F;
+}
+
+/*aqui é onde os personagens principais são mostrados e onde nosso jogo acontece, tem o plano de fundo preto,
     com uma borda roxa mais escura "border" e com uma sombra que por usar uma cor mais clara faz parece que luz esta sendo emitida.
     Ela também sua a propriedade flex e position absolute para sempre se manter ao centro*/
-    #canvas2{
-      background: black;
-      border-radius: 50px;
-      border: solid 10px #191970;
-      display: flex;
-      position: absolute;
-      top: 10%;
-      left: 50%;
-      transform:translate(-50%,-50%);
-      box-shadow: 0 0 50px #6A5ACD, inset 0 0 50px #4F4F4F;
-  }
-  /* a adição dessa nova estrutura visual permite que a tela interativa localizada na parte superior que serve para a visualização do vencedor e dos pontos acumulados por ele, esse novo canvas2 foi necessario ser adicionado para que a visualização do primeiro canvas  não fosse afetada */
-    body{ background-color: #483D8B;}/*modifica o corpo do site para ter um fundo roxo*/
+#canvas2 {
+  background: black;
+  border-radius: 50px;
+  border: solid 10px #191970;
+  display: flex;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 50px #6A5ACD, inset 0 0 50px #4F4F4F;
+}
 
-@keyframes anima-estrelas1{
-  from{
+/* a adição dessa nova estrutura visual permite que a tela interativa localizada na parte superior que serve para a visualização do vencedor e dos pontos acumulados por ele, esse novo canvas2 foi necessario ser adicionado para que a visualização do primeiro canvas  não fosse afetada */
+body {
+  background-color: #483D8B;
+}
+
+/*modifica o corpo do site para ter um fundo roxo*/
+
+@keyframes anima-estrelas1 {
+  from {
     transform: trasnlateY(0px)
   }
-  to{
+
+  to {
     transform: translateY(70px)
   }
 }
-@keyframes anima-estrelas2{
-  from{
+
+@keyframes anima-estrelas2 {
+  from {
     transform: trasnlateY(70px)
   }
-  to{
+
+  to {
     transform: translateY(0px)
   }
 }
 
-@keyframes anima-estrelas3{
-  from{
+@keyframes anima-estrelas3 {
+  from {
     transform: trasnlateY(0px)
   }
-  to{
+
+  to {
     transform: translateY(0px)
   }
 }

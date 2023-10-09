@@ -257,25 +257,25 @@ const desenharInimigosRecursivo = (inimigos, cor) => {
     //Começando a desenhar o asteroide.
     ctx.beginPath();
 
-    ctx.moveTo(inimigo.x-inimigo.raio- Math.sin(37 * Math.PI/36)(0.5)*inimigo.raio,inimigo.y-inimigo.raio - Math.cos(Math.PI/9)*inimigo.raio);
+    ctx.moveTo(inimigo.x-inimigo.raio- Math.sin(37 * Math.PI/36)*(0.5)*inimigo.raio,inimigo.y-inimigo.raio - Math.cos(Math.PI/9)*inimigo.raio);
 
-    ctx.lineTo(inimigo.x-inimigo.raio- Math.sin(17* Math.PI/36)(0.5)*inimigo.raio,inimigo.y-inimigo.raio + Math.cos(14*Math.PI/36)*inimigo.raio);
+    ctx.lineTo(inimigo.x-inimigo.raio- Math.sin(17* Math.PI/36)*(0.5)*inimigo.raio,inimigo.y-inimigo.raio + Math.cos(14*Math.PI/36)*inimigo.raio);
 
-    ctx.lineTo(inimigo.x-2* inimigo.raio + Math.sin(13* Math.PI/36 )(0.5)*inimigo.raio ,inimigo.y+inimigo.raio - Math.cos(2*Math.PI/36)*inimigo.raio);
+    ctx.lineTo(inimigo.x-2* inimigo.raio + Math.sin(13* Math.PI/36 )*(0.5)*inimigo.raio ,inimigo.y+inimigo.raio - Math.cos(2*Math.PI/36)*inimigo.raio);
 
-    ctx.lineTo(inimigo.x - Math.sin(8* Math.PI/36)(0.5)*inimigo.raio, inimigo.y+inimigo.raio + Math.cos(13*Math.PI/36)*inimigo.raio);
+    ctx.lineTo(inimigo.x - Math.sin(8* Math.PI/36)*(0.5)*inimigo.raio, inimigo.y+inimigo.raio + Math.cos(13*Math.PI/36)*inimigo.raio);
 
-    ctx.lineTo(inimigo.x+inimigo.raio + Math.sin(33* Math.PI/36)(0.5)*inimigo.raio, inimigo.y + Math.cos(Math.PI/36)*inimigo.raio);
+    ctx.lineTo(inimigo.x+inimigo.raio + Math.sin(33* Math.PI/36)*(0.5)*inimigo.raio, inimigo.y + Math.cos(Math.PI/36)*inimigo.raio);
 
-    ctx.lineTo(inimigo.x+inimigo.raio/2+inimigo.raio + Math.sin(33*Math.PI/36)(0.5)*inimigo.raio,inimigo.y-inimigo.raio - Math.cos(18*Math.PI/36)*inimigo.raio);
+    ctx.lineTo(inimigo.x+inimigo.raio/2+inimigo.raio + Math.sin(33*Math.PI/36)*(0.5)*inimigo.raio,inimigo.y-inimigo.raio - Math.cos(18*Math.PI/36)*inimigo.raio);
 
-    ctx.lineTo(inimigo.x+inimigo.raio + Math.sin(11*Math.PI/36)(0.5)*inimigo.raio, inimigo.y-2*inimigo.raio - Math.cos(34*Math.PI/36)*inimigo.raio);
+    ctx.lineTo(inimigo.x+inimigo.raio + Math.sin(11*Math.PI/36)*(0.5)*inimigo.raio, inimigo.y-2*inimigo.raio - Math.cos(34*Math.PI/36)*inimigo.raio);
 
-    ctx.lineTo(inimigo.x+inimigo.raio - Math.sin(33*Math.PI/36)(0.5)*inimigo.raio,inimigo.y-3*inimigo.raio - Math.cos(26*Math.PI/36)*inimigo.raio);
+    ctx.lineTo(inimigo.x+inimigo.raio - Math.sin(33*Math.PI/36)*(0.5)*inimigo.raio,inimigo.y-3*inimigo.raio - Math.cos(26*Math.PI/36)*inimigo.raio);
 
-    ctx.lineTo(inimigo.x+0 - Math.sin(33*Math.PI/36)(0.5)*inimigo.raio, inimigo.y-2*inimigo.raio + Math.cos(12*Math.PI/36)*inimigo.raio);
+    ctx.lineTo(inimigo.x+0 - Math.sin(33*Math.PI/36)*(0.5)*inimigo.raio, inimigo.y-2*inimigo.raio + Math.cos(12*Math.PI/36)*inimigo.raio);
 
-    ctx.lineTo(inimigo.x +inimigo.raio- Math.sin(21*Math.PI/36)(0.5)*inimigo.raio, inimigo.y-inimigo.raio - Math.cos(6*Math.PI/36)*inimigo.raio);
+    ctx.lineTo(inimigo.x +inimigo.raio- Math.sin(21*Math.PI/36)*(0.5)*inimigo.raio, inimigo.y-inimigo.raio - Math.cos(6*Math.PI/36)*inimigo.raio);
 
     ctx.closePath();
     // Terminando de desenhar o asteroide.

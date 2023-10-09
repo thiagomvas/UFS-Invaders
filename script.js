@@ -169,7 +169,7 @@ const update = () => {
 
         // Calcular os inimigos pos colisão
         const inimigosPosColisaoComProj1 = jogador1AcertouAlgo ? removerColisoes(inimigosDentroDoMapa, projeteis1) : inimigosDentroDoMapa;
-        const inimigosPosColisaoComProj2 = jogador1AcertouAlgo ? removerColisoes(inimigosPosColisaoComProj1, projeteis2) : inimigosPosColisaoComProj1;
+        const inimigosPosColisaoComProj2 = jogador2AcertouAlgo ? removerColisoes(inimigosPosColisaoComProj1, projeteis2) : inimigosPosColisaoComProj1;
 
         // Definindo as listas de inimigos e projeteis finais apos todas as funções executarem.
         const inimigosFinais = inimigosPosColisaoComProj2;
@@ -254,30 +254,35 @@ const desenharInimigosRecursivo = (inimigos, cor) => {
     const [inimigo, ...xs] = inimigos;
     if (indef(inimigo)) return 0;
 
-    //Começando a desenhar o círculo do asteroide.
+    //Começando a desenhar o asteroide.
     ctx.beginPath();
-    ctx.arc(inimigo.x, inimigo.y, inimigo.raio, 0, 2 * Math.PI);
-    ctx.closePath();
-    ctx.strokeStyle = ctx.fillStyle = "#F8F8FF"
-    ctx.fill();
 
-    //Primeiro triângulo da parte interna do círculo.
-    ctx.beginPath();
-    ctx.moveTo(inimigo.x - (inimigo.raio - 2), inimigo.y + (inimigo.raio - 5));//Ponta de baixo do triângulo.
-    ctx.lineTo(inimigo.x - (inimigo.raio - 20), inimigo.y - (inimigo.raio + 5));//Ponta de cima do triângulo.
-    ctx.lineTo(inimigo.x - (inimigo.raio + 3), inimigo.y - (inimigo.raio - 10));//Ponta do meio do triângulo.
-    ctx.closePath();
-    ctx.strokeStyle = ctx.fillStyle = "#000000"
-    ctx.fill();
+    ctx.moveTo(inimigo.x-inimigo.raio- Math.sin(37 * Math.PI/36)(0.5)*inimigo.raio,inimigo.y-inimigo.raio - Math.cos(Math.PI/9)*inimigo.raio);
 
-    //Pegundo triangulo da parte interna do círculo.
-    ctx.beginPath();
-    ctx.moveTo(inimigo.x, inimigo.y);//Ponta do triângulo localizada interna ao círculo.
-    ctx.lineTo(inimigo.x + (inimigo.raio + 3), inimigo.y - (inimigo.raio - 15));//Ponta do triângulo localizada na parte de baixo e  externa ao círculo.
-    ctx.lineTo(inimigo.x + (inimigo.raio - 2), inimigo.y + (inimigo.raio - 5));//Ponta do triângulo localizada na parte de cimae externa ao círculo. 
+    ctx.lineTo(inimigo.x-inimigo.raio- Math.sin(17* Math.PI/36)(0.5)*inimigo.raio,inimigo.y-inimigo.raio + Math.cos(14*Math.PI/36)*inimigo.raio);
+
+    ctx.lineTo(inimigo.x-2* inimigo.raio + Math.sin(13* Math.PI/36 )(0.5)*inimigo.raio ,inimigo.y+inimigo.raio - Math.cos(2*Math.PI/36)*inimigo.raio);
+
+    ctx.lineTo(inimigo.x - Math.sin(8* Math.PI/36)(0.5)*inimigo.raio, inimigo.y+inimigo.raio + Math.cos(13*Math.PI/36)*inimigo.raio);
+
+    ctx.lineTo(inimigo.x+inimigo.raio + Math.sin(33* Math.PI/36)(0.5)*inimigo.raio, inimigo.y + Math.cos(Math.PI/36)*inimigo.raio);
+
+    ctx.lineTo(inimigo.x+inimigo.raio/2+inimigo.raio + Math.sin(33*Math.PI/36)(0.5)*inimigo.raio,inimigo.y-inimigo.raio - Math.cos(18*Math.PI/36)*inimigo.raio);
+
+    ctx.lineTo(inimigo.x+inimigo.raio + Math.sin(11*Math.PI/36)(0.5)*inimigo.raio, inimigo.y-2*inimigo.raio - Math.cos(34*Math.PI/36)*inimigo.raio);
+
+    ctx.lineTo(inimigo.x+inimigo.raio - Math.sin(33*Math.PI/36)(0.5)*inimigo.raio,inimigo.y-3*inimigo.raio - Math.cos(26*Math.PI/36)*inimigo.raio);
+
+    ctx.lineTo(inimigo.x+0 - Math.sin(33*Math.PI/36)(0.5)*inimigo.raio, inimigo.y-2*inimigo.raio + Math.cos(12*Math.PI/36)*inimigo.raio);
+
+    ctx.lineTo(inimigo.x +inimigo.raio- Math.sin(21*Math.PI/36)(0.5)*inimigo.raio, inimigo.y-inimigo.raio - Math.cos(6*Math.PI/36)*inimigo.raio);
+
     ctx.closePath();
-    ctx.strokeStyle = ctx.fillStyle = "#000000"
-    ctx.fill();
+    // Terminando de desenhar o asteroide.
+    ctx.strokeStyle="#F0F8FF"
+    ctx.stroke();
+    // usamos uma função para desenhar que consiste na utilização do seno e cosseno para que o desenho continue estando dentro do seu raio de colisão, para que os projeteis e a sua destruição funcionem normalmente.
+
 
     desenharInimigosRecursivo(xs, cor);
 }

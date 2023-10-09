@@ -127,29 +127,18 @@ const update = () => {
         // Limpar o canvas
         ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientWidth);
         ctx2.clearRect(0, 0, canvas2.clientWidth, canvas2.clientWidth);
-
+        console.log(`${tempoDeJogoTotal > proximoSpawn}`)
         // Se estiver na hora de invocar novos inimigos e todo mundo estiver vivo, invoque inimigos
         const novoHorarioDeSpawn = calcularProximoSpawn(tempoDeJogoTotal, proximoSpawn, dificuldade);
-        const quantidadeParaInvocar = Math.floor(5 * dificuldade);
-        const inimigosPosSpawn = deveInvocarInimigo(tempoDeJogoTotal, proximoSpawn) ? [...inimigos, ...invocarInimigosRecursivo(inimigos, quantidadeParaInvocar, funcoesDeMovimento)] : inimigos;
-
         // Checar se alguem ganhou
         const novoJogadorVencedor = checarJogadorVencedor(inimigos, jogador1, jogador2)
 
-        // Calcular novas posições dos inimigos
-        const inimigosPosMovimento = inimigosPosSpawn.map((inim) => moverInimigo(inim, velocidadeInimigos, dificuldade / FPSDesejado))
-        const inimigosDentroDoMapa = removerForaDoMapa(inimigosPosMovimento);
-
         // Calcular novas posições para os projeteis
-        const projeteis1PosMovimento = projeteis1.map((proj) => moverProjetil(proj, velocidadeProjeteis / FPSDesejado))
-        const projeteis2PosMovimento = projeteis2.map((proj) => moverProjetil(proj, velocidadeProjeteis / FPSDesejado))
-        const projeteis1DentroDoMapa = removerForaDoMapa(projeteis1PosMovimento);
-        const projeteis2DentroDoMapa = removerForaDoMapa(projeteis2PosMovimento);//necessario a repetição para verificar cada projetil
 
         // Desenhar os projeteis e inimigos
-        desenharProjeteisRecursivo(projeteis1DentroDoMapa, '#FF00FF')
-        desenharProjeteisRecursivo(projeteis2DentroDoMapa, '#FF00FF')
-        desenharInimigosRecursivo(inimigosDentroDoMapa, '#FFFFFF');
+        desenharProjeteisRecursivo(projeteis1, '#FF00FF')
+        desenharProjeteisRecursivo(projeteis2, '#FF00FF')
+        desenharInimigosRecursivo(inimigos, '#FFFFFF');
 
         // Desenhar os jogadores
         desenharNave(jogador1.x, jogador1.y, '#0000FF'); // Jogador 1
@@ -159,22 +148,14 @@ const update = () => {
         const jogador1PosMovimento = moverNave(jogador1, jogador1.input * velocidadeNave);
         const jogador2PosMovimento = moverNave(jogador2, jogador2.input * velocidadeNave);
 
-
-        // Calcular novos pontos caso algum dos projeteis de cada jogador atingir um inimigo
-        const jogador1AcertouAlgo = checarTodasColisoes(inimigos, projeteis1).length > 0
-        const jogador2AcertouAlgo = checarTodasColisoes(inimigos, projeteis2).length > 0
         const jogador1Final = jogador1PosMovimento
 
         const jogador2Final = jogador2PosMovimento
 
-        // Calcular os inimigos pos colisão
-        const inimigosPosColisaoComProj1 = jogador1AcertouAlgo ? removerColisoes(inimigosDentroDoMapa, projeteis1) : inimigosDentroDoMapa;
-        const inimigosPosColisaoComProj2 = jogador2AcertouAlgo ? removerColisoes(inimigosPosColisaoComProj1, projeteis2) : inimigosPosColisaoComProj1;
-
         // Definindo as listas de inimigos e projeteis finais apos todas as funções executarem.
-        const inimigosFinais = inimigosPosColisaoComProj2;
-        const projeteis1Finais = projeteis1DentroDoMapa;
-        const projeteis2Finais = projeteis2DentroDoMapa;
+        const inimigosFinais = computarInimigos(inimigos, dificuldade, tempoDeJogoTotal, proximoSpawn, projeteis1, projeteis2);
+        const projeteis1Finais = computarProjeteis(projeteis1, velocidadeProjeteis, FPSDesejado);
+        const projeteis2Finais = computarProjeteis(projeteis2, velocidadeProjeteis, FPSDesejado);
 
         const novoEstadoDeJogo = gerarNovoEstadoDeJogo(estadoDeJogoAtual.horaInicial,
             jogador1Final,
@@ -189,6 +170,41 @@ const update = () => {
     }
     setInterval(frame, 1 / FPSDesejado);
 
+}
+
+/**
+ * Calcula as novas posições dos projeteis fornecidos
+ * @param {object[]} projeteis 
+ * @returns {object[]} Os projeteis computados para serem utilizados no proximo frame
+ */
+const computarProjeteis = (projeteis, velocidade, FPS) => {
+    const projeteisPosMovimento = projeteis.map((proj) => moverProjetil(proj, velocidade / FPS)) // Calcula as novas posições dos projeteis
+    const projeteisDentroDoMapa = removerForaDoMapa(projeteisPosMovimento); // Remove os projeteis fora do mapa
+    return projeteisDentroDoMapa;
+
+}
+
+/**
+ * Calcula as novas posições dos inimigos, removendo os inimigos que sairem do mapa e forem atingidos por algum jogador
+ * @param {object[]} inimigos Os inimigos que serão a base dos calculos
+ * @param {number} dificuldade O valor da dificuldade atual do jogo
+ * @param {number} tempoDeJogoTotal A duração da partida atual
+ * @param {number} proximoSpawn O horario do proximo spawn
+ * @param {object[]} projeteis1 A lista de projeteis do jogador 1
+ * @param {object[]} projeteis2 A lista de projeteis do jogador 2
+ * @returns {object[]}
+ */
+const computarInimigos = (inimigos, dificuldade, tempoDeJogoTotal, proximoSpawn, projeteis1, projeteis2) => {
+
+    const jogador1AcertouAlgo = checarTodasColisoes(inimigos, projeteis1).length > 0 // Checa se o jogador 1 acertou algum inimigo
+    const jogador2AcertouAlgo = checarTodasColisoes(inimigos, projeteis2).length > 0 // Checa se o jogador 2 acertou algum inimigo
+    const quantidadeParaInvocar = Math.floor(5 * dificuldade); // Calcula quantos inimigos vão ser invocados
+    const inimigosPosSpawn = deveInvocarInimigo(tempoDeJogoTotal, proximoSpawn) ? [...inimigos, ...invocarInimigosRecursivo(inimigos, quantidadeParaInvocar, funcoesDeMovimento)] : inimigos; // Checa se será necessario invocar algum inimigo
+    const inimigosPosMovimento = inimigosPosSpawn.map((inim) => moverInimigo(inim, velocidadeInimigos, dificuldade / FPSDesejado)) // Calcula as novas posições dos inimigos
+    const inimigosDentroDoMapa = removerForaDoMapa(inimigosPosMovimento); // Remove os inimigos que sairem do mapa
+    const inimigosPosColisaoComProj1 = jogador1AcertouAlgo ? removerColisoes(inimigosDentroDoMapa, projeteis1) : inimigosDentroDoMapa; // Remove os inimigos que foram mortos pelo jogador 1
+    const inimigosPosColisaoComProj2 = jogador2AcertouAlgo ? removerColisoes(inimigosPosColisaoComProj1, projeteis2) : inimigosPosColisaoComProj1; // Remove os inimigos que foram mortos pelo jogador 2
+    return inimigosPosColisaoComProj2;
 }
 
 

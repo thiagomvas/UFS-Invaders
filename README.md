@@ -1,4 +1,4 @@
-UFS invaders 
+# UFS invaders 
 
 Um jogo de dois jogadores, um contra um, tentando sobreviver ao ataque de meteoros atirando e desviando deles. Quem passa mais tempo sem ser atingido por meteoros, ganha!
 
@@ -10,4 +10,8 @@ Integrantes do projeto:
 - José Elio Leite Santana
 - Nicolas Mateus Ferreira de Jesus
 
+Disponivel para jogar em:
+- https://thiagomvas.github.io/UFS-Invaders/
+- https://ufs-invaser.netlify.app
 
+Trailer: https://youtu.be/IWf-mg_HCDs?feature=shared
